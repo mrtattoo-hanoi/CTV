@@ -1,1 +1,44 @@
-
+{
+  "collaborators": [
+    {
+      "id": "T-1001",
+      "userName": "A001",
+      "pass": "12345678",
+      "name": "Nguyen Van A",
+      "email": "nguyenvana@example.com",
+      "phone": "0123456789",
+      "total_commission": 1500000,
+      "transactions": [
+        {
+          "transaction_id": "BILL001",
+          "date": "2025-06-29T10:00:00Z",
+          "bill_amount": 5000000,
+          "commission": 500000
+        },
+        {
+          "transaction_id": "BILL002",
+          "date": "2025-06-30T15:30:00Z",
+          "bill_amount": 10000000,
+          "commission": 1000000
+        }
+      ]
+    },
+    {
+      "id": "T-1002",
+      "userName": "B001",
+      "pass": "12345678",
+      "name": "Tran Thi B",
+      "email": "tranthib@example.com",
+      "phone": "0987654321",
+      "total_commission": 800000,
+      "transactions": [
+        {
+          "transaction_id": "BILL003",
+          "date": "2025-07-01T14:00:00Z",
+          "bill_amount": 8000000,
+          "commission": 800000
+        }
+      ]
+    }
+  ]
+}
