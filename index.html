@@ -13,14 +13,26 @@
     button { padding: 10px 20px; background-color: #4CAF50; color: white; border: none; cursor: pointer; }
     button:hover { background-color: #45a049; }
     .error { color: red; font-size: 0.9em; display: none; }
-    .eye-icon { 
-      position: absolute; 
-      right: 8px; 
-      top: 50%; 
-      transform: translateY(-50%); 
-      cursor: pointer; 
-      font-size: 18px; 
-    }
+    .form-group { 
+  margin-bottom: 15px; 
+  position: relative; 
+  display: flex; 
+  align-items: center; 
+}
+label { display: block; margin-bottom: 5px; }
+input { width: 100%; padding: 8px 30px 8px 8px; box-sizing: border-box; }
+button { padding: 10px 20px; background-color: #4CAF50; color: white; border: none; cursor: pointer; }
+button:hover { background-color: #45a049; }
+.error { color: red; font-size: 0.9em; display: none; }
+.eye-icon { 
+  position: absolute; 
+  right: 8px; 
+  top: 50%; 
+  transform: translateY(-50%); 
+  cursor: pointer; 
+  font-size: 18px; 
+  line-height: 1; /* Đảm bảo icon không bị lệch do line-height */
+}
   </style>
 </head>
 <body>
