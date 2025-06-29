@@ -136,6 +136,21 @@ function validateForm(data) {
   return errors;
 }
 
+// Kiểm tra mật khẩu thời gian thực
+function validateConfirmPasswordRealtime() {
+  const password = document.getElementById('password').value;
+  const confirmPassword = document.getElementById('confirm-password').value;
+  const confirmError = document.getElementById('confirm-password-error');
+  
+  if (confirmPassword && password !== confirmPassword) {
+    confirmError.textContent = 'Mật khẩu không khớp!';
+    confirmError.style.display = 'block';
+  } else {
+    confirmError.textContent = '';
+    confirmError.style.display = 'none';
+  }
+}
+
 // Tạo ID mới cho cộng tác viên
 function generateCollaboratorId(currentCollaborators) {
   const lastId = currentCollaborators.length > 0
@@ -252,11 +267,20 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
 
     alert('Đăng ký thành công! ID của bạn là: ' + newCollaborator.id);
     document.getElementById('register-form').reset();
+    // Xóa thông báo lỗi sau khi đăng ký thành công
+    ['username', 'password', 'confirm-password', 'name', 'phone', 'email'].forEach(key => {
+      document.getElementById(`${key}-error`).style.display = 'none';
+    });
   } catch (error) {
     formError.textContent = 'Lỗi khi đăng ký: ' + error.message;
     formError.style.display = 'block';
   }
 });
+
+// Kiểm tra mật khẩu thời gian thực
+document.getElementById('confirm-password').addEventListener('input', validateConfirmPasswordRealtime);
+document.getElementById('password').addEventListener('input', validateConfirmPasswordRealtime);
+</script>
   </script>
 </body>
 </html>
