@@ -10,22 +10,40 @@
     .form-group { 
   margin-bottom: 15px; 
   position: relative; 
-  display: flex; 
-  align-items: center; 
 }
-label { display: block; margin-bottom: 5px; }
-input { width: 100%; padding: 8px 30px 8px 8px; box-sizing: border-box; }
-button { padding: 10px 20px; background-color: #4CAF50; color: white; border: none; cursor: pointer; }
-button:hover { background-color: #45a049; }
-.error { color: red; font-size: 0.9em; display: none; }
+label { 
+  display: block; 
+  margin-bottom: 5px; 
+}
+input { 
+  width: 100%; 
+  padding: 8px 30px 8px 8px; 
+  box-sizing: border-box; 
+  height: 36px; /* Đảm bảo chiều cao input đủ để căn giữa icon */
+}
+button { 
+  padding: 10px 20px; 
+  background-color: #4CAF50; 
+  color: white; 
+  border: none; 
+  cursor: pointer; 
+}
+button:hover { 
+  background-color: #45a049; 
+}
+.error { 
+  color: red; 
+  font-size: 0.9em; 
+  display: none; 
+}
 .eye-icon { 
   position: absolute; 
   right: 8px; 
-  top: 50%; 
+  top: calc(100% - 18px); /* Căn giữa dựa trên chiều cao input */
   transform: translateY(-50%); 
   cursor: pointer; 
   font-size: 18px; 
-  line-height: 1; /* Đảm bảo icon không bị lệch do line-height */
+  line-height: 1; /* Đảm bảo icon không bị lệch */
 }
   </style>
 </head>
