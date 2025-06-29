@@ -65,7 +65,7 @@
   </div>
 
   <script>
-    // Lấy API key từ k.txt
+   // Lấy API key từ k.txt
 async function getApiKey() {
   try {
     const response = await fetch('https://raw.githubusercontent.com/mrtattoo-hanoi/CTV/refs/heads/main/k.txt');
@@ -137,7 +137,10 @@ function generateCollaboratorId(currentCollaborators) {
 
 // Hàm mã hóa an toàn cho btoa
 function safeBtoa(str) {
-  return btoa(unescape(encodeURIComponent(str)));
+  const encoder = new TextEncoder();
+  const data = encoder.encode(str);
+  const binary = String.fromCharCode(...data);
+  return btoa(binary);
 }
 
 // Xử lý form đăng ký
@@ -148,7 +151,9 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
 
   // Xóa thông báo lỗi cũ
   ['username', 'password', 'confirm-password', 'name', 'phone', 'email'].forEach(key => {
-    document.getElementById(`${key}-error`).style.display = 'none';
+    const errorElement = document.getElementById(`${key}-error`);
+    errorElement.textContent = '';
+    errorElement.style.display = 'none';
   });
 
   // Lấy dữ liệu từ form
