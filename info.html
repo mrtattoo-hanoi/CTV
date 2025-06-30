@@ -106,25 +106,11 @@
       margin: 5px 0;
     }
    .popup-content img {
-  max-width: 100%;
+  width: 100%;
   height: auto;
   margin: 5px 0;
   display: block;
-  width: 500px; /* Mặc định cho PC */
-}
-
-/* Điện thoại: màn hình nhỏ hơn 600px */
-@media (max-width: 600px) {
-  .popup-content img {
-    width: 250px; /* Chiều rộng cho điện thoại */
-  }
-}
-
-/* PC: màn hình từ 600px trở lên */
-@media (min-width: 600px) {
-  .popup-content img {
-    width: 500px; /* Chiều rộng cho PC */
-  }
+  max-width: 500px; /* Mặc định cho PC */
 }
     .close-button {
       padding: 10px 20px;
