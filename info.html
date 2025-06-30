@@ -21,10 +21,28 @@
     h2, h3 { 
       color: #333; 
     }
+    .button-group { 
+      display: flex; 
+      gap: 10px; 
+      margin-top: 20px; 
+    }
+    button { 
+      padding: 10px 20px; 
+      background-color: #4CAF50; 
+      color: white; 
+      border: none; 
+      cursor: pointer; 
+      border-radius: 4px; 
+      flex: 1; 
+    }
+    button:hover { 
+      background-color: #45a049; 
+    }
     table { 
       width: 100%; 
       border-collapse: collapse; 
       margin-top: 20px; 
+      display: none; 
     }
     th, td { 
       border: 1px solid #ddd; 
@@ -34,18 +52,53 @@
     th { 
       background-color: #f2f2f2; 
     }
-    button { 
+    .bill-link { 
+      color: #4CAF50; 
+      text-decoration: none; 
+      cursor: pointer; 
+    }
+    .bill-link:hover { 
+      text-decoration: underline; 
+    }
+    .popup { 
+      display: none; 
+      position: fixed; 
+      top: 50%; 
+      left: 50%; 
+      transform: translate(-50%, -50%); 
+      background: white; 
+      padding: 20px; 
+      border-radius: 8px; 
+      box-shadow: 0 0 10px rgba(0,0,0,0.3); 
+      max-width: 500px; 
+      width: 90%; 
+      z-index: 1000; 
+    }
+    .popup-overlay { 
+      display: none; 
+      position: fixed; 
+      top: 0; 
+      left: 0; 
+      width: 100%; 
+      height: 100%; 
+      background: rgba(0,0,0,0.5); 
+      z-index: 999; 
+    }
+    .popup-content { 
+      margin-bottom: 20px; 
+    }
+    .popup-content p { 
+      margin: 5px 0; 
+    }
+    .close-button { 
       padding: 10px 20px; 
       background-color: #4CAF50; 
       color: white; 
       border: none; 
       cursor: pointer; 
-      display: block; 
-      width: 100%; 
       border-radius: 4px; 
-      margin-top: 20px; 
     }
-    button:hover { 
+    .close-button:hover { 
       background-color: #45a049; 
     }
   </style>
@@ -59,25 +112,42 @@
     <p><strong>Số điện thoại:</strong> <span id="collab-phone"></span></p>
     <p><strong>Email:</strong> <span id="collab-email"></span></p>
     <p><strong>Tổng số tiền hoa hồng:</strong> <span id="collab-commission"></span> VNĐ</p>
-    <h3>Lịch sử giao dịch</h3>
-    <table>
+    
+    <div class="button-group">
+      <button onclick="showTransactionHistory()">Lịch sử giao dịch</button>
+      <button onclick="showWithdrawalHistory()">Lịch sử rút tiền</button>
+    </div>
+    
+    <table id="transaction-table">
       <thead>
         <tr>
           <th>Số bill</th>
-          <th>Ngày giờ</th>
+          <th>Tiền hoa hồng</th>
           <th>Trạng thái</th>
         </tr>
       </thead>
-      <tbody id="transaction-table"></tbody>
+      <tbody id="transaction-table-body"></tbody>
     </table>
-    <button onclick="logout()">Đăng xuất</button>
+
+    <div class="popup-overlay" id="popup-overlay"></div>
+    <div class="popup" id="popup">
+      <div class="popup-content" id="popup-content"></div>
+      <button class="close-button" onclick="closePopup()">Đóng</button>
+    </div>
   </div>
 
   <script>
-    // Hàm đăng xuất
-    function logout() {
-      localStorage.removeItem('user');
-      window.location.href = 'index.html';
+    // Lấy API key từ k.txt
+    async function getApiKey() {
+      try {
+        const response = await fetch('https://raw.githubusercontent.com/mrtattoo-hanoi/CTV/refs/heads/main/k.txt');
+        const text = await response.text();
+        const lines = text.split('\n').filter(line => line.trim() !== '');
+        return lines.join('');
+      } catch (error) {
+        console.error('Lỗi khi lấy API key:', error);
+        return null;
+      }
     }
 
     // Lấy thông tin người dùng từ localStorage
@@ -93,24 +163,100 @@
       document.getElementById('collab-phone').textContent = user.phone;
       document.getElementById('collab-email').textContent = user.email;
 
-      // Tính tổng hoa hồng từ các giao dịch có trạng thái "no"
-      const totalCommission = user.transactions
-        .filter(tx => tx.trangThai === 'no')
-        .reduce((sum, tx) => sum + tx.commission, 0);
-      document.getElementById('collab-commission').textContent = totalCommission.toLocaleString();
+      // Lấy dữ liệu từ bill.json
+      async function loadTransactionData() {
+        const GITHUB_TOKEN = await getApiKey();
+        if (!GITHUB_TOKEN) {
+          alert('Lỗi khi lấy API key!');
+          return [];
+        }
 
-      // Hiển thị bảng giao dịch
-      const tableBody = document.getElementById('transaction-table');
-      tableBody.innerHTML = '';
-      user.transactions.forEach(tx => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td>${tx.transaction_id}</td>
-          <td>${new Date(tx.date).toLocaleString('vi-VN')}</td>
-          <td>${tx.trangThai === 'no' ? 'Chưa rút' : 'Đã rút'}</td>
+        try {
+          const response = await fetch('https://api.github.com/repos/mrtattoo-hanoi/CTV/contents/bill.json', {
+            headers: {
+              'Authorization': `Bearer ${GITHUB_TOKEN}`,
+              'Accept': 'application/vnd.github+json'
+            }
+          });
+          const fileData = await response.json();
+          const content = JSON.parse(atob(fileData.content));
+          return content.transactions;
+        } catch (error) {
+          console.error('Lỗi khi lấy dữ liệu bill.json:', error);
+          return [];
+        }
+      }
+
+      // Hiển thị lịch sử giao dịch
+      async function showTransactionHistory() {
+        const table = document.getElementById('transaction-table');
+        const tableBody = document.getElementById('transaction-table-body');
+        tableBody.innerHTML = '';
+        table.style.display = 'table';
+
+        const transactions = await loadTransactionData();
+        const userId = user.id; // Lấy id từ user trong localStorage
+        const userTransactions = transactions.filter(tx => tx.CTV.id === userId);
+
+        // Tính tổng hoa hồng
+        const totalCommission = userTransactions
+          .filter(tx => tx.CTV.trangThai === 'no')
+          .reduce((sum, tx) => sum + tx.commission, 0);
+        document.getElementById('collab-commission').textContent = totalCommission.toLocaleString();
+
+        // Hiển thị bảng giao dịch
+        userTransactions.forEach(tx => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td><span class="bill-link" onclick="showBillDetails(${JSON.stringify(tx).replace(/"/g, '&quot;')})">${tx.transaction_id}</span></td>
+            <td>${tx.commission.toLocaleString()} VNĐ</td>
+            <td>${tx.CTV.trangThai === 'no' ? 'Chưa rút' : 'Đã rút'}</td>
+          `;
+          tableBody.appendChild(row);
+        });
+      }
+
+      // Hiển thị popup chi tiết bill
+      function showBillDetails(transaction) {
+        const popup = document.getElementById('popup');
+        const popupContent = document.getElementById('popup-content');
+        const popupOverlay = document.getElementById('popup-overlay');
+
+        popupContent.innerHTML = `
+          <p><strong>Số bill:</strong> ${transaction.transaction_id}</p>
+          <p><strong>Ngày giờ:</strong> ${new Date(transaction.date).toLocaleString('vi-VN')}</p>
+          <p><strong>Tên khách:</strong> ${transaction.infoKhach.ten}</p>
+          <p><strong>Quốc gia:</strong> ${transaction.infoKhach.quocGia}</p>
+          <p><strong>Thông tin hình xăm:</strong> ${transaction.infoKhach.tattooInfo}</p>
+          <p><strong>Số tiền bill:</strong> ${transaction.bill_amount.toLocaleString()} VNĐ</p>
+          <p><strong>Tiền hoa hồng:</strong> ${transaction.commission.toLocaleString()} VNĐ</p>
+          <p><strong>ID CTV:</strong> ${transaction.CTV.id}</p>
+          <p><strong>Số điện thoại CTV:</strong> ${transaction.CTV.phone}</p>
+          <p><strong>Trạng thái:</strong> ${transaction.CTV.trangThai === 'no' ? 'Chưa rút' : 'Đã rút'}</p>
         `;
-        tableBody.appendChild(row);
-      });
+        popup.style.display = 'block';
+        popupOverlay.style.display = 'block';
+      }
+
+      // Đóng popup
+      function closePopup() {
+        const popup = document.getElementById('popup');
+        const popupOverlay = document.getElementById('popup-overlay');
+        popup.style.display = 'none';
+        popupOverlay.style.display = 'none';
+      }
+
+      // Placeholder cho lịch sử rút tiền
+      function showWithdrawalHistory() {
+        alert('Chức năng lịch sử rút tiền chưa được triển khai!');
+        // TODO: Thêm logic hiển thị bảng các giao dịch có trangThai: "yes" nếu cần
+      }
+
+      // Xử lý đăng xuất
+      function logout() {
+        localStorage.removeItem('user');
+        window.location.href = 'index.html';
+      }
     }
   </script>
 </body>
