@@ -1,7 +1,7 @@
 {
   "collaborators": [
     {
-      "id": "T-1001",
+      "id": "T1001",
       "userName": "A001",
       "pass": "12345678",
       "name": "Nguyen Van A",
@@ -9,7 +9,7 @@
       "phone": "0123456789"
     },
     {
-      "id": "T-1002",
+      "id": "T1002",
       "userName": "B001",
       "pass": "12345678",
       "name": "Tran Thi B",
@@ -17,7 +17,7 @@
       "phone": "0987654321"
     },
     {
-      "id": "T-1003",
+      "id": "T1003",
       "userName": "Son502",
       "pass": "12345678@",
       "name": "Nguyen Son",
@@ -25,7 +25,7 @@
       "phone": "0377616886"
     },
     {
-      "id": "T-1004",
+      "id": "T1004",
       "userName": "son502123",
       "pass": "123456@",
       "name": "Nguyen Son",
@@ -33,7 +33,7 @@
       "phone": "0326714961"
     },
     {
-      "id": "T-1005",
+      "id": "T1005",
       "userName": "Son5023",
       "pass": "1234567@",
       "name": "Sơn Nguyễn",
