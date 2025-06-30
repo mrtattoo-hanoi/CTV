@@ -6,15 +6,7 @@
       "pass": "12345678",
       "name": "Nguyen Van A",
       "email": "nguyenvana@example.com",
-      "phone": "0123456789",
-      "transactions": [
-        {
-          "transaction_id": "BILL001","date": "2025-06-29T10:00:00Z","bill_amount": 5000000,"commission": 500000,"trangThai": "no"
-        },
-        {
-          "transaction_id": "BILL002","date": "2025-06-30T15:30:00Z","bill_amount": 10000000,"commission": 1000000,"trangThai": "no"
-        }
-      ]
+      "phone": "0123456789"
     },
     {
       "id": "T-1002",
@@ -22,12 +14,7 @@
       "pass": "12345678",
       "name": "Tran Thi B",
       "email": "tranthib@example.com",
-      "phone": "0987654321",
-      "transactions": [
-        {
-          "transaction_id": "BILL003","date": "2025-07-01T14:00:00Z","bill_amount": 8000000,"commission": 800000,"trangThai": "no"
-        }
-      ]
+      "phone": "0987654321"
     },
     {
       "id": "T-1003",
@@ -35,8 +22,7 @@
       "pass": "12345678@",
       "name": "Nguyen Son",
       "email": "ducson502@gmail.com",
-      "phone": "0377616886",
-      "transactions": []
+      "phone": "0377616886"
     },
     {
       "id": "T-1004",
@@ -44,8 +30,7 @@
       "pass": "123456@",
       "name": "Nguyen Son",
       "email": "ducson502@gmail.com",
-      "phone": "0326714961",
-      "transactions": []
+      "phone": "0326714961"
     },
     {
       "id": "T-1005",
@@ -53,8 +38,7 @@
       "pass": "1234567@",
       "name": "Sơn Nguyễn",
       "email": "ducson502@gmail.com",
-      "phone": "0326714962",
-      "transactions": []
+      "phone": "0326714962"
     }
   ]
 }
