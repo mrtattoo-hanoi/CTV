@@ -228,27 +228,10 @@
   const popup = document.getElementById('popup');
   const popupContent = document.getElementById('popup-content');
   const popupOverlay = document.getElementById('popup-overlay');
-  // Base URL cho GitHub Pages
-  const baseImageUrl = 'https://raw.githubusercontent.com/mrtattoo-hanoi/CTV/main';
-  // Base URL cho cục bộ (nếu cần)
-  const localBaseImageUrl = './';
-  // Xác định môi trường (có thể thay đổi tùy theo cách bạn triển khai)
-  const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname === '';
-  const currentBaseUrl = isLocal ? localBaseImageUrl : baseImageUrl;
-
-  // Ánh xạ link ảnh
+  // Sử dụng link tương đối trực tiếp từ bill.json
   const imagesHtml = (transaction.anh || []).map(url => {
-    let fullUrl;
-    if (isLocal) {
-      // Cục bộ: ánh xạ "anh/anh1.jpg" hoặc "/anh1.jpg" thành "./anh/anh1.jpg" hoặc "./anh1.jpg"
-      fullUrl = url.startsWith('anh/') || url.startsWith('/anh/') ? `${currentBaseUrl}${url.replace(/^\/*/, 'anh/')}` : url;
-    } else {
-      // GitHub Pages: ánh xạ "anh/anh1.jpg" hoặc "/anh1.jpg" thành "https://raw.githubusercontent.com/mrtattoo-hanoi/CTV/main/anh/anh1.jpg"
-      fullUrl = url.startsWith('anh/') || url.startsWith('/anh/') ? `${currentBaseUrl}/${url.replace(/^\/*/, 'anh/')}` : url;
-    }
-    return `<img src="${fullUrl}" alt="Hình ảnh giao dịch" onerror="this.src='https://via.placeholder.com/150?text=Ảnh+không+tồn+tại'; this.alt='Ảnh không tồn tại';" />`;
+    return `<img src="${url}" alt="Hình ảnh giao dịch" style="width: 100%; height: auto;" onerror="this.src='https://via.placeholder.com/150?text=Ảnh+không+tồn+tại'; this.alt='Ảnh không tồn tại';" />`;
   }).join('');
-
   popupContent.innerHTML = `
     <p><strong>Số bill:</strong> ${transaction.transaction_id}</p>
     <p><strong>Ngày giờ:</strong> ${new Date(transaction.date).toLocaleString('vi-VN')}</p>
