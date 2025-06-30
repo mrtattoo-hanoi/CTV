@@ -3,6 +3,11 @@
     {
       "transaction_id": "BILL001",
       "date": "2025-06-29T10:00:00Z",
+      "infoKhach": {
+        "ten": "Alex",
+        "quocGia": "USA",
+        "tattooInfo": "mini tiger tattoo"
+      },
       "bill_amount": 5000000,
       "commission": 500000,
       "CTV": {
@@ -13,34 +18,49 @@
     },
     {
       "transaction_id": "BILL002",
-      "date": "2025-06-30T15:30:00Z",
-      "bill_amount": 10000000,
-      "commission": 1000000,
+      "date": "2025-06-30T14:30:00Z",
+      "infoKhach": {
+        "ten": "Emma",
+        "quocGia": "Canada",
+        "tattooInfo": "small rose tattoo"
+      },
+      "bill_amount": 7500000,
+      "commission": 750000,
       "CTV": {
-        "id": "A-1001",
-        "phone": "0377616886",
+        "id": "A-1002",
+        "phone": "0981234567",
         "trangThai": "yes"
       }
     },
     {
       "transaction_id": "BILL003",
-      "date": "2025-07-01T09:00:00Z",
-      "bill_amount": 7500000,
-      "commission": 750000,
+      "date": "2025-06-30T16:45:00Z",
+      "infoKhach": {
+        "ten": "Liam",
+        "quocGia": "Australia",
+        "tattooInfo": "dragon sleeve tattoo"
+      },
+      "bill_amount": 12000000,
+      "commission": 1200000,
       "CTV": {
-        "id": "A-1002",
-        "phone": "0901234567",
+        "id": "A-1003",
+        "phone": "0912345678",
         "trangThai": "no"
       }
     },
     {
       "transaction_id": "BILL004",
-      "date": "2025-07-02T14:20:00Z",
+      "date": "2025-06-30T18:20:00Z",
+      "infoKhach": {
+        "ten": "Sophie",
+        "quocGia": "UK",
+        "tattooInfo": "butterfly ankle tattoo"
+      },
       "bill_amount": 3000000,
       "commission": 300000,
       "CTV": {
-        "id": "A-1002",
-        "phone": "0901234567",
+        "id": "A-1004",
+        "phone": "0978765432",
         "trangThai": "yes"
       }
     }
