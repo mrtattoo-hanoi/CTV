@@ -14,7 +14,8 @@
         "id": "T1001",
         "phone": "0377616886",
         "trangThai": "wait"
-      }
+      },
+      "anh": ["/anh1.jpg", "/anh2.jpg"]
     },
     {
       "transaction_id": "BILL002",
@@ -30,7 +31,8 @@
         "id": "T1001",
         "phone": "0981234567",
         "trangThai": "yes"
-      }
+      },
+      "anh": ["/anh1.jpg", "/anh2.jpg"]
     },
     {
       "transaction_id": "BILL003",
@@ -46,7 +48,8 @@
         "id": "T1002",
         "phone": "0912345678",
         "trangThai": "no"
-      }
+      },
+      "anh": ["/anh1.jpg", "/anh2.jpg"]
     },
     {
       "transaction_id": "BILL004",
@@ -62,7 +65,8 @@
         "id": "T1002",
         "phone": "0978765432",
         "trangThai": "yes"
-      }
+      },
+      "anh": ["/anh1.jpg", "/anh2.jpg"]
     }
   ]
 }
