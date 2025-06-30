@@ -69,22 +69,6 @@
       font-size: 18px; 
       line-height: 1; 
     }
-    table { 
-      width: 100%; 
-      border-collapse: collapse; 
-      margin-top: 20px; 
-    }
-    th, td { 
-      border: 1px solid #ddd; 
-      padding: 8px; 
-      text-align: left; 
-    }
-    th { 
-      background-color: #f2f2f2; 
-    }
-    .hidden { 
-      display: none; 
-    }
     a { 
       color: #4CAF50; 
       text-decoration: none; 
@@ -119,29 +103,6 @@
       </form>
       <p id="form-error" class="error"></p>
       <p>Chưa có tài khoản? <a href="register.html">Đăng ký</a></p>
-    </div>
-
-    <!-- Dashboard cộng tác viên -->
-    <div id="dashboard" class="hidden">
-      <h2>Xin chào cộng tác viên</h2>
-      <h3>Thông tin cá nhân của bạn</h3>
-      <p><strong>Tên đăng nhập:</strong> <span id="collab-username"></span></p>
-      <p><strong>Họ và tên:</strong> <span id="collab-name"></span></p>
-      <p><strong>Số điện thoại:</strong> <span id="collab-phone"></span></p>
-      <p><strong>Email:</strong> <span id="collab-email"></span></p>
-      <p><strong>Tổng số tiền hoa hồng:</strong> <span id="collab-commission"></span> VNĐ</p>
-      <h3>Lịch sử giao dịch</h3>
-      <table>
-        <thead>
-          <tr>
-            <th>Số bill</th>
-            <th>Ngày giờ</th>
-            <th>Trạng thái</th>
-          </tr>
-        </thead>
-        <tbody id="transaction-table"></tbody>
-      </table>
-      <button onclick="logout()">Đăng xuất</button>
     </div>
   </div>
 
@@ -217,49 +178,16 @@
           return;
         }
 
-        // Hiển thị dashboard
-        document.getElementById('login-form').classList.add('hidden');
-        document.getElementById('dashboard').classList.remove('hidden');
+        // Lưu thông tin người dùng vào localStorage
+        localStorage.setItem('user', JSON.stringify(user));
 
-        // Hiển thị thông tin cá nhân
-        document.getElementById('collab-username').textContent = user.userName;
-        document.getElementById('collab-name').textContent = user.name;
-        document.getElementById('collab-phone').textContent = user.phone;
-        document.getElementById('collab-email').textContent = user.email;
-
-        // Tính tổng hoa hồng từ các giao dịch có trạng thái "no"
-        const totalCommission = user.transactions
-          .filter(tx => tx.trangThai === 'no')
-          .reduce((sum, tx) => sum + tx.commission, 0);
-        document.getElementById('collab-commission').textContent = totalCommission.toLocaleString();
-
-        // Hiển thị bảng giao dịch
-        const tableBody = document.getElementById('transaction-table');
-        tableBody.innerHTML = '';
-        user.transactions.forEach(tx => {
-          const row = document.createElement('tr');
-          row.innerHTML = `
-            <td>${tx.transaction_id}</td>
-            <td>${new Date(tx.date).toLocaleString('vi-VN')}</td>
-            <td>${tx.trangThai === 'no' ? 'Chưa rút' : 'Đã rút'}</td>
-          `;
-          tableBody.appendChild(row);
-        });
+        // Chuyển hướng đến info.html
+        window.location.href = 'info.html';
       } catch (error) {
         formError.textContent = 'Lỗi khi đăng nhập: ' + error.message;
         formError.style.display = 'block';
       }
     });
-
-    // Hàm đăng xuất
-    function logout() {
-      document.getElementById('login-form').classList.remove('hidden');
-      document.getElementById('dashboard').classList.add('hidden');
-      document.getElementById('login-form-element').reset();
-      document.getElementById('form-error').style.display = 'none';
-      document.getElementById('username-error').style.display = 'none';
-      document.getElementById('password-error').style.display = 'none';
-    }
   </script>
 </body>
 </html>
