@@ -213,10 +213,12 @@
       const GITHUB_TOKEN = await getApiKey();
       if (!GITHUB_TOKEN) {
         console.error('Không có API key để cập nhật bill.json');
-        return false;
+        return { success: false, message: 'Không có API key' };
       }
 
       try {
+        console.log('Chuẩn bị cập nhật bill.json, SHA:', sha); // Debug
+        console.log('Nội dung cập nhật:', JSON.stringify({ transactions: updatedTransactions }, null, 2)); // Debug
         const response = await fetch('https://api.github.com/repos/mrtattoo-hanoi/CTV/contents/bill.json', {
           method: 'PUT',
           headers: {
@@ -226,7 +228,7 @@
           },
           body: JSON.stringify({
             message: 'Cập nhật trạng thái rút tiền',
-            content: btoa(JSON.stringify({ transactions: updatedTransactions }, null, 2)),
+            content: btoa(unescape(encodeURIComponent(JSON.stringify({ transactions: updatedTransactions }, null, 2)))),
             sha: sha
           })
         });
@@ -235,10 +237,10 @@
           throw new Error('Lỗi khi cập nhật bill.json: ' + response.status + ' - ' + (errorData.message || 'Unknown error'));
         }
         console.log('Cập nhật bill.json thành công'); // Debug
-        return true;
+        return { success: true };
       } catch (error) {
         console.error('Lỗi khi cập nhật bill.json:', error);
-        return false;
+        return { success: false, message: error.message };
       }
     }
 
@@ -308,15 +310,13 @@
             const row = document.createElement('tr');
             const statusText = tx.CTV.trangThai === 'no' ? 'Chưa rút' : 
                               tx.CTV.trangThai === 'wait' ? 'Chờ gửi' : 'Đã rút';
-            // Tạo ID duy nhất cho giao dịch
             const transactionId = `tx_${tx.transaction_id}`;
             row.innerHTML = `
-              <td><span class="bill-link" id="${transactionId}" data-transaction='${JSON.stringify(tx).replace(/'/g, "\\'")}'>${tx.transaction_id}</span></td>
+              <td><span class="bill-link" id="${transactionId}">${tx.transaction_id}</span></td>
               <td>${(tx.commission || 0).toLocaleString()} VNĐ</td>
               <td>${statusText}</td>
             `;
             tableBody.appendChild(row);
-            // Thêm sự kiện click
             document.getElementById(transactionId).addEventListener('click', () => {
               console.log('Click vào bill:', tx.transaction_id); // Debug
               showBillDetails(tx);
@@ -350,10 +350,15 @@
 
         // Đóng popup
         function closePopup() {
+          console.log('Đóng popup'); // Debug
           const popup = document.getElementById('popup');
           const popupOverlay = document.getElementById('popup-overlay');
-          popup.style.display = 'none';
-          popupOverlay.style.display = 'none';
+          if (popup && popupOverlay) {
+            popup.style.display = 'none';
+            popupOverlay.style.display = 'none';
+          } else {
+            console.error('Không tìm thấy popup hoặc popup-overlay');
+          }
         }
 
         // Yêu cầu rút tiền
@@ -385,12 +390,12 @@
             return tx;
           });
 
-          const success = await updateBillJson(updatedTransactions, sha);
-          if (success) {
+          const result = await updateBillJson(updatedTransactions, sha);
+          if (result.success) {
             alert(`Bạn đã gửi yêu cầu rút tiền thành công cho các hóa đơn: ${billIds} vui lòng chờ Mr.Tattoo xử lý trong 1 - 2 ngày làm việc`);
             await displayTransactions(); // Tải lại bảng
           } else {
-            errorElement.textContent = 'Lỗi khi gửi yêu cầu rút tiền. Vui lòng kiểm tra API key hoặc thử lại!';
+            errorElement.textContent = `Lỗi khi gửi yêu cầu rút tiền: ${result.message}`;
             errorElement.style.display = 'block';
           }
         }
