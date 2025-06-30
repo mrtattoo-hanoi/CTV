@@ -1,0 +1,48 @@
+{
+  "transactions": [
+    {
+      "transaction_id": "BILL001",
+      "date": "2025-06-29T10:00:00Z",
+      "bill_amount": 5000000,
+      "commission": 500000,
+      "CTV": {
+        "id": "A-1001",
+        "phone": "0377616886",
+        "trangThai": "no"
+      }
+    },
+    {
+      "transaction_id": "BILL002",
+      "date": "2025-06-30T15:30:00Z",
+      "bill_amount": 10000000,
+      "commission": 1000000,
+      "CTV": {
+        "id": "A-1001",
+        "phone": "0377616886",
+        "trangThai": "yes"
+      }
+    },
+    {
+      "transaction_id": "BILL003",
+      "date": "2025-07-01T09:00:00Z",
+      "bill_amount": 7500000,
+      "commission": 750000,
+      "CTV": {
+        "id": "A-1002",
+        "phone": "0901234567",
+        "trangThai": "no"
+      }
+    },
+    {
+      "transaction_id": "BILL004",
+      "date": "2025-07-02T14:20:00Z",
+      "bill_amount": 3000000,
+      "commission": 300000,
+      "CTV": {
+        "id": "A-1002",
+        "phone": "0901234567",
+        "trangThai": "yes"
+      }
+    }
+  ]
+}
