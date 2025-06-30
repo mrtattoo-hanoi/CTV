@@ -1,1 +1,117 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thông tin cộng tác viên - Mr.Tattoo Hanoi</title>
+  <style>
+    body { 
+      font-family: Arial, sans-serif; 
+      margin: 20px; 
+      background-color: #f4f4f4; 
+    }
+    .container { 
+      max-width: 600px; 
+      margin: auto; 
+      background: white; 
+      padding: 30px; 
+      border-radius: 8px; 
+      box-shadow: 0 0 10px rgba(0,0,0,0.1); 
+    }
+    h2, h3 { 
+      color: #333; 
+    }
+    table { 
+      width: 100%; 
+      border-collapse: collapse; 
+      margin-top: 20px; 
+    }
+    th, td { 
+      border: 1px solid #ddd; 
+      padding: 8px; 
+      text-align: left; 
+    }
+    th { 
+      background-color: #f2f2f2; 
+    }
+    button { 
+      padding: 10px 20px; 
+      background-color: #4CAF50; 
+      color: white; 
+      border: none; 
+      cursor: pointer; 
+      display: block; 
+      width: 100%; 
+      border-radius: 4px; 
+      margin-top: 20px; 
+    }
+    button:hover { 
+      background-color: #45a049; 
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Xin chào cộng tác viên</h2>
+    <h3>Thông tin cá nhân của bạn</h3>
+    <p><strong>Tên đăng nhập:</strong> <span id="collab-username"></span></p>
+    <p><strong>Họ và tên:</strong> <span id="collab-name"></span></p>
+    <p><strong>Số điện thoại:</strong> <span id="collab-phone"></span></p>
+    <p><strong>Email:</strong> <span id="collab-email"></span></p>
+    <p><strong>Tổng số tiền hoa hồng:</strong> <span id="collab-commission"></span> VNĐ</p>
+    <h3>Lịch sử giao dịch</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Số bill</th>
+          <th>Ngày giờ</th>
+          <th>Trạng thái</th>
+        </tr>
+      </thead>
+      <tbody id="transaction-table"></tbody>
+    </table>
+    <button onclick="logout()">Đăng xuất</button>
+  </div>
 
+  <script>
+    // Hàm đăng xuất
+    function logout() {
+      localStorage.removeItem('user');
+      window.location.href = 'index.html';
+    }
+
+    // Lấy thông tin người dùng từ localStorage
+    const user = JSON.parse(localStorage.getItem('user'));
+
+    if (!user) {
+      // Nếu không có thông tin người dùng, chuyển hướng về index.html
+      window.location.href = 'index.html';
+    } else {
+      // Hiển thị thông tin cá nhân
+      document.getElementById('collab-username').textContent = user.userName;
+      document.getElementById('collab-name').textContent = user.name;
+      document.getElementById('collab-phone').textContent = user.phone;
+      document.getElementById('collab-email').textContent = user.email;
+
+      // Tính tổng hoa hồng từ các giao dịch có trạng thái "no"
+      const totalCommission = user.transactions
+        .filter(tx => tx.trangThai === 'no')
+        .reduce((sum, tx) => sum + tx.commission, 0);
+      document.getElementById('collab-commission').textContent = totalCommission.toLocaleString();
+
+      // Hiển thị bảng giao dịch
+      const tableBody = document.getElementById('transaction-table');
+      tableBody.innerHTML = '';
+      user.transactions.forEach(tx => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${tx.transaction_id}</td>
+          <td>${new Date(tx.date).toLocaleString('vi-VN')}</td>
+          <td>${tx.trangThai === 'no' ? 'Chưa rút' : 'Đã rút'}</td>
+        `;
+        tableBody.appendChild(row);
+      });
+    }
+  </script>
+</body>
+</html>
