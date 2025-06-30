@@ -110,7 +110,8 @@
     // Lấy API key từ k.txt
     async function getApiKey() {
       try {
-        const response = await fetch('https://raw.githubusercontent.com/mrtattoo-hanoi/CTV/refs/heads/main/k.txt');
+        const response = await fetch('https://raw.githubusercontent.com/mrtattoo-hanoi/CTV/main/k.txt');
+        if (!response.ok) throw new Error('Không thể lấy API key: ' + response.status);
         const text = await response.text();
         const lines = text.split('\n').filter(line => line.trim() !== '');
         return lines.join('');
@@ -164,6 +165,7 @@
             'Accept': 'application/vnd.github+json'
           }
         });
+        if (!response.ok) throw new Error('Lỗi khi lấy CTV.json: ' + response.status);
         const fileData = await response.json();
         const content = JSON.parse(atob(fileData.content));
 
@@ -178,8 +180,8 @@
           return;
         }
 
-        // Lưu thông tin người dùng vào localStorage
-        localStorage.setItem('user', JSON.stringify(user));
+        // Lưu userName vào localStorage
+        localStorage.setItem('userName', user.userName);
 
         // Chuyển hướng đến info.html
         window.location.href = 'info.html';
