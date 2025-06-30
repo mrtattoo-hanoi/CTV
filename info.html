@@ -212,6 +212,7 @@
     async function updateBillJson(updatedTransactions, sha) {
       const GITHUB_TOKEN = await getApiKey();
       if (!GITHUB_TOKEN) {
+        console.error('Không có API key để cập nhật bill.json');
         return false;
       }
 
@@ -220,7 +221,8 @@
           method: 'PUT',
           headers: {
             'Authorization': `Bearer ${GITHUB_TOKEN}`,
-            'Accept': 'application/vnd.github+json'
+            'Accept': 'application/vnd.github+json',
+            'Content-Type': 'application/json'
           },
           body: JSON.stringify({
             message: 'Cập nhật trạng thái rút tiền',
@@ -228,7 +230,11 @@
             sha: sha
           })
         });
-        if (!response.ok) throw new Error('Lỗi khi cập nhật bill.json: ' + response.status);
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error('Lỗi khi cập nhật bill.json: ' + response.status + ' - ' + (errorData.message || 'Unknown error'));
+        }
+        console.log('Cập nhật bill.json thành công'); // Debug
         return true;
       } catch (error) {
         console.error('Lỗi khi cập nhật bill.json:', error);
@@ -302,17 +308,25 @@
             const row = document.createElement('tr');
             const statusText = tx.CTV.trangThai === 'no' ? 'Chưa rút' : 
                               tx.CTV.trangThai === 'wait' ? 'Chờ gửi' : 'Đã rút';
+            // Tạo ID duy nhất cho giao dịch
+            const transactionId = `tx_${tx.transaction_id}`;
             row.innerHTML = `
-              <td><span class="bill-link" onclick='showBillDetails(${JSON.stringify(tx).replace(/'/g, "\\'")})'>${tx.transaction_id}</span></td>
+              <td><span class="bill-link" id="${transactionId}" data-transaction='${JSON.stringify(tx).replace(/'/g, "\\'")}'>${tx.transaction_id}</span></td>
               <td>${(tx.commission || 0).toLocaleString()} VNĐ</td>
               <td>${statusText}</td>
             `;
             tableBody.appendChild(row);
+            // Thêm sự kiện click
+            document.getElementById(transactionId).addEventListener('click', () => {
+              console.log('Click vào bill:', tx.transaction_id); // Debug
+              showBillDetails(tx);
+            });
           });
         }
 
         // Hiển thị popup chi tiết bill
         function showBillDetails(transaction) {
+          console.log('Hiển thị chi tiết bill:', transaction); // Debug
           const popup = document.getElementById('popup');
           const popupContent = document.getElementById('popup-content');
           const popupOverlay = document.getElementById('popup-overlay');
@@ -344,9 +358,17 @@
 
         // Yêu cầu rút tiền
         async function requestWithdrawal() {
+          const errorElement = document.getElementById('table-error');
+          errorElement.style.display = 'none';
           const { transactions, sha } = await loadTransactionData();
+          console.log('SHA bill.json:', sha); // Debug
           const userId = user.id;
-          const pendingBills = transactions.filter(tx => tx.CTV && tx.CTV.id === userId && tx.CTV.trangThai === 'no');
+          console.log('Lọc giao dịch cho yêu cầu rút tiền, ID:', userId); // Debug
+          const pendingBills = transactions.filter(tx => {
+            const match = tx.CTV && tx.CTV.id === userId && tx.CTV.trangThai === 'no';
+            console.log(`Giao dịch ${tx.transaction_id}:`, { id: tx.CTV?.id, trangThai: tx.CTV?.trangThai, match }); // Debug
+            return match;
+          });
           
           if (pendingBills.length === 0) {
             alert('Không có hóa đơn nào để yêu cầu rút tiền!');
@@ -354,8 +376,10 @@
           }
 
           const billIds = pendingBills.map(tx => tx.transaction_id).join(', ');
+          console.log('Các bill yêu cầu rút:', billIds); // Debug
           const updatedTransactions = transactions.map(tx => {
             if (tx.CTV && tx.CTV.id === userId && tx.CTV.trangThai === 'no') {
+              console.log(`Cập nhật trạng thái ${tx.transaction_id} từ "no" thành "wait"`); // Debug
               return { ...tx, CTV: { ...tx.CTV, trangThai: 'wait' } };
             }
             return tx;
@@ -366,7 +390,8 @@
             alert(`Bạn đã gửi yêu cầu rút tiền thành công cho các hóa đơn: ${billIds} vui lòng chờ Mr.Tattoo xử lý trong 1 - 2 ngày làm việc`);
             await displayTransactions(); // Tải lại bảng
           } else {
-            alert('Lỗi khi gửi yêu cầu rút tiền. Vui lòng thử lại!');
+            errorElement.textContent = 'Lỗi khi gửi yêu cầu rút tiền. Vui lòng kiểm tra API key hoặc thử lại!';
+            errorElement.style.display = 'block';
           }
         }
 
