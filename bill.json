@@ -15,7 +15,10 @@
         "phone": "0377616886",
         "trangThai": "wait"
       },
-      "anh": ["/CTV/anh/anh1.jpg", "/CTV/anh/anh2.jpg"]
+      "anh": [
+        "/CTV/anh/anh1.jpg",
+        "/CTV/anh/anh2.jpg"
+      ]
     },
     {
       "transaction_id": "BILL002",
@@ -32,7 +35,10 @@
         "phone": "0981234567",
         "trangThai": "yes"
       },
-      "anh": ["/CTV/anh/anh1.jpg", "/CTV/anh/anh2.jpg"]
+      "anh": [
+        "/CTV/anh/anh1.jpg",
+        "/CTV/anh/anh2.jpg"
+      ]
     },
     {
       "transaction_id": "BILL003",
@@ -47,9 +53,12 @@
       "CTV": {
         "id": "T1002",
         "phone": "0912345678",
-        "trangThai": "no"
+        "trangThai": "wait"
       },
-      "anh": ["/CTV/anh/anh1.jpg", "/CTV/anh/anh2.jpg"]
+      "anh": [
+        "/CTV/anh/anh1.jpg",
+        "/CTV/anh/anh2.jpg"
+      ]
     },
     {
       "transaction_id": "BILL004",
@@ -66,7 +75,10 @@
         "phone": "0978765432",
         "trangThai": "yes"
       },
-      "anh": ["/CTV/anh/anh1.jpg", "/CTV/anh/anh2.jpg"]
+      "anh": [
+        "/CTV/anh/anh1.jpg",
+        "/CTV/anh/anh2.jpg"
+      ]
     }
   ]
 }
