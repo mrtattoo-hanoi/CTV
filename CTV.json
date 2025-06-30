@@ -5,8 +5,8 @@
       "userName": "A001",
       "pass": "12345678",
       "name": "Nguyen Van A",
-      "email": "nguyenvana@example.com",
-      "phone": "0123456789"
+      "email": "nguyenvana@example.com", 
+      "phone": "0123456789","bankName":"ACB", "bankNumb":12345678
     },
     {
       "id": "T1002",
@@ -14,7 +14,7 @@
       "pass": "12345678",
       "name": "Tran Thi B",
       "email": "tranthib@example.com",
-      "phone": "0987654321"
+      "phone": "0987654321","bankName":"ACB", "bankNumb":12345678
     },
     {
       "id": "T1003",
@@ -22,7 +22,7 @@
       "pass": "12345678@",
       "name": "Nguyen Son",
       "email": "ducson502@gmail.com",
-      "phone": "0377616886"
+      "phone": "0377616886","bankName":"ACB", "bankNumb":12345678
     },
     {
       "id": "T1004",
@@ -30,25 +30,7 @@
       "pass": "123456@",
       "name": "Nguyen Son",
       "email": "ducson502@gmail.com",
-      "phone": "0326714961"
-    },
-    {
-      "id": "T1005",
-      "userName": "Son5023",
-      "pass": "1234567@",
-      "name": "SÆ¡n Nguyá»n",
-      "email": "ducson502@gmail.com",
-      "phone": "0326714962"
-    },
-    {
-      "id": "T-0NaN",
-      "userName": "son5022222",
-      "pass": "123456@",
-      "name": "sơn",
-      "email": "ducson502@gmail.com",
-      "phone": "0991234567",
-      "total_commission": 0,
-      "transactions": []
+      "phone": "0326714961","bankName":"ACB", "bankNumb":12345678
     }
   ]
 }
