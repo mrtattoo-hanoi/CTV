@@ -113,6 +113,7 @@
   <div class="container">
     <h2>Xin chào cộng tác viên</h2>
     <h3>Thông tin cá nhân của bạn</h3>
+    <p><strong>ID của bạn là:</strong> <span id="collab-id"></span></p>
     <p><strong>Tên đăng nhập:</strong> <span id="collab-username"></span></p>
     <p><strong>Họ và tên:</strong> <span id="collab-name"></span></p>
     <p><strong>Số điện thoại:</strong> <span id="collab-phone"></span></p>
@@ -148,14 +149,12 @@
     async function getApiKey() {
       try {
         const response = await fetch('https://raw.githubusercontent.com/mrtattoo-hanoi/CTV/main/k.txt');
-        if (!response.ok) throw new Error(`Không thể lấy API key: ${response.status}`);
+        if (!response.ok) throw new Error('Không thể lấy API key: ' + response.status);
         const text = await response.text();
         const lines = text.split('\n').filter(line => line.trim() !== '');
         return lines.join('');
       } catch (error) {
         console.error('Lỗi khi lấy API key:', error);
-        document.getElementById('table-error').textContent = 'Lỗi khi lấy API key: ' + error.message;
-        document.getElementById('table-error').style.display = 'block';
         return null;
       }
     }
@@ -163,18 +162,17 @@
     // Lấy thông tin người dùng từ localStorage
     const user = JSON.parse(localStorage.getItem('user'));
 
-    if (!user || !user.id) {
-      console.error('Không tìm thấy thông tin người dùng hoặc ID!');
-      document.getElementById('table-error').textContent = 'Vui lòng đăng nhập lại!';
-      document.getElementById('table-error').style.display = 'block';
+    if (!user) {
+      // Nếu không có thông tin người dùng, chuyển hướng về index.html
       window.location.href = 'index.html';
     } else {
       // Hiển thị thông tin cá nhân
+      console.log('Thông tin người dùng:', user); // Debug
+      document.getElementById('collab-id').textContent = user.id || 'Không có dữ liệu';
       document.getElementById('collab-username').textContent = user.userName || 'Không có dữ liệu';
       document.getElementById('collab-name').textContent = user.name || 'Không có dữ liệu';
       document.getElementById('collab-phone').textContent = user.phone || 'Không có dữ liệu';
       document.getElementById('collab-email').textContent = user.email || 'Không có dữ liệu';
-      console.log('Thông tin người dùng:', user); // Debug
 
       // Lấy dữ liệu từ bill.json
       async function loadTransactionData() {
@@ -183,6 +181,8 @@
 
         const GITHUB_TOKEN = await getApiKey();
         if (!GITHUB_TOKEN) {
+          errorElement.textContent = 'Lỗi: Không thể lấy API key!';
+          errorElement.style.display = 'block';
           return [];
         }
 
@@ -193,7 +193,7 @@
               'Accept': 'application/vnd.github+json'
             }
           });
-          if (!response.ok) throw new Error(`Lỗi khi lấy bill.json: ${response.status}`);
+          if (!response.ok) throw new Error('Lỗi khi lấy bill.json: ' + response.status);
           const fileData = await response.json();
           const content = JSON.parse(atob(fileData.content));
           console.log('Dữ liệu bill.json:', content); // Debug
@@ -213,7 +213,7 @@
         const errorElement = document.getElementById('table-error');
         tableBody.innerHTML = '';
         errorElement.style.display = 'none';
-        table.style.display = 'none'; // Ẩn bảng trước khi xử lý
+        table.style.display = 'none'; // Ẩn bảng trước khi tải dữ liệu
 
         const transactions = await loadTransactionData();
         console.log('Giao dịch:', transactions); // Debug
@@ -242,7 +242,7 @@
         userTransactions.forEach(tx => {
           const row = document.createElement('tr');
           row.innerHTML = `
-            <td><span class="bill-link" onclick="showBillDetails(${JSON.stringify(tx).replace(/"/g, '&quot;')})">${tx.transaction_id}</span></td>
+            <td><span class="bill-link" onclick='showBillDetails(${JSON.stringify(tx).replace(/'/g, "\\'")})'>${tx.transaction_id}</span></td>
             <td>${(tx.commission || 0).toLocaleString()} VNĐ</td>
             <td>${tx.CTV.trangThai === 'no' ? 'Chưa rút' : 'Đã rút'}</td>
           `;
