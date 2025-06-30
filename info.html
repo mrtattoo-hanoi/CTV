@@ -42,7 +42,6 @@
       width: 100%; 
       border-collapse: collapse; 
       margin-top: 20px; 
-      display: none; 
     }
     th, td { 
       border: 1px solid #ddd; 
@@ -121,7 +120,7 @@
     <p><strong>Tổng số tiền hoa hồng:</strong> <span id="collab-commission">0</span> VNĐ</p>
     
     <div class="button-group">
-      <button onclick="showTransactionHistory()">Lịch sử giao dịch</button>
+      <button onclick="requestWithdrawal()">Yêu cầu rút tiền</button>
       <button onclick="showWithdrawalHistory()">Lịch sử rút tiền</button>
     </div>
     
@@ -188,7 +187,7 @@
     async function loadTransactionData() {
       const GITHUB_TOKEN = await getApiKey();
       if (!GITHUB_TOKEN) {
-        return [];
+        return { transactions: [], sha: null };
       }
 
       try {
@@ -202,20 +201,47 @@
         const fileData = await response.json();
         const content = JSON.parse(atob(fileData.content));
         console.log('Dữ liệu bill.json:', content); // Debug
-        return content.transactions || [];
+        return { transactions: content.transactions || [], sha: fileData.sha };
       } catch (error) {
         console.error('Lỗi khi lấy dữ liệu bill.json:', error);
-        return [];
+        return { transactions: [], sha: null };
+      }
+    }
+
+    // Cập nhật bill.json
+    async function updateBillJson(updatedTransactions, sha) {
+      const GITHUB_TOKEN = await getApiKey();
+      if (!GITHUB_TOKEN) {
+        return false;
+      }
+
+      try {
+        const response = await fetch('https://api.github.com/repos/mrtattoo-hanoi/CTV/contents/bill.json', {
+          method: 'PUT',
+          headers: {
+            'Authorization': `Bearer ${GITHUB_TOKEN}`,
+            'Accept': 'application/vnd.github+json'
+          },
+          body: JSON.stringify({
+            message: 'Cập nhật trạng thái rút tiền',
+            content: btoa(JSON.stringify({ transactions: updatedTransactions }, null, 2)),
+            sha: sha
+          })
+        });
+        if (!response.ok) throw new Error('Lỗi khi cập nhật bill.json: ' + response.status);
+        return true;
+      } catch (error) {
+        console.error('Lỗi khi cập nhật bill.json:', error);
+        return false;
       }
     }
 
     // Kiểm tra userName từ localStorage
     const userName = localStorage.getItem('userName');
     if (!userName) {
-      // Nếu không có userName, chuyển hướng về index.html
       window.location.href = 'index.html';
     } else {
-      // Tải và hiển thị thông tin người dùng
+      // Tải và hiển thị thông tin
       (async () => {
         const errorElement = document.getElementById('table-error');
         errorElement.style.display = 'none';
@@ -240,15 +266,15 @@
         document.getElementById('collab-phone').textContent = user.phone || 'Không có dữ liệu';
         document.getElementById('collab-email').textContent = user.email || 'Không có dữ liệu';
 
-        // Hiển thị lịch sử giao dịch
-        async function showTransactionHistory() {
+        // Hàm hiển thị bảng giao dịch
+        async function displayTransactions() {
           const table = document.getElementById('transaction-table');
           const tableBody = document.getElementById('transaction-table-body');
           errorElement.style.display = 'none';
           tableBody.innerHTML = '';
           table.style.display = 'none';
 
-          const transactions = await loadTransactionData();
+          const { transactions } = await loadTransactionData();
           console.log('Giao dịch:', transactions); // Debug
           const userId = user.id;
           console.log('ID người dùng:', userId); // Debug
@@ -266,7 +292,7 @@
 
           // Tính tổng hoa hồng
           const totalCommission = userTransactions
-            .filter(tx => tx.CTV.trangThai === 'no')
+            .filter(tx => tx.CTV.trangThai === 'no' || tx.CTV.trangThai === 'wait')
             .reduce((sum, tx) => sum + (tx.commission || 0), 0);
           document.getElementById('collab-commission').textContent = totalCommission.toLocaleString();
 
@@ -274,10 +300,12 @@
           table.style.display = 'table';
           userTransactions.forEach(tx => {
             const row = document.createElement('tr');
+            const statusText = tx.CTV.trangThai === 'no' ? 'Chưa rút' : 
+                              tx.CTV.trangThai === 'wait' ? 'Chờ gửi' : 'Đã rút';
             row.innerHTML = `
               <td><span class="bill-link" onclick='showBillDetails(${JSON.stringify(tx).replace(/'/g, "\\'")})'>${tx.transaction_id}</span></td>
               <td>${(tx.commission || 0).toLocaleString()} VNĐ</td>
-              <td>${tx.CTV.trangThai === 'no' ? 'Chưa rút' : 'Đã rút'}</td>
+              <td>${statusText}</td>
             `;
             tableBody.appendChild(row);
           });
@@ -299,7 +327,8 @@
             <p><strong>Tiền hoa hồng:</strong> ${(transaction.commission || 0).toLocaleString()} VNĐ</p>
             <p><strong>ID CTV:</strong> ${transaction.CTV.id}</p>
             <p><strong>Số điện thoại CTV:</strong> ${transaction.CTV.phone}</p>
-            <p><strong>Trạng thái:</strong> ${transaction.CTV.trangThai === 'no' ? 'Chưa rút' : 'Đã rút'}</p>
+            <p><strong>Trạng thái:</strong> ${transaction.CTV.trangThai === 'no' ? 'Chưa rút' : 
+                                           transaction.CTV.trangThai === 'wait' ? 'Chờ gửi' : 'Đã rút'}</p>
           `;
           popup.style.display = 'block';
           popupOverlay.style.display = 'block';
@@ -313,13 +342,38 @@
           popupOverlay.style.display = 'none';
         }
 
+        // Yêu cầu rút tiền
+        async function requestWithdrawal() {
+          const { transactions, sha } = await loadTransactionData();
+          const userId = user.id;
+          const pendingBills = transactions.filter(tx => tx.CTV && tx.CTV.id === userId && tx.CTV.trangThai === 'no');
+          
+          if (pendingBills.length === 0) {
+            alert('Không có hóa đơn nào để yêu cầu rút tiền!');
+            return;
+          }
+
+          const billIds = pendingBills.map(tx => tx.transaction_id).join(', ');
+          const updatedTransactions = transactions.map(tx => {
+            if (tx.CTV && tx.CTV.id === userId && tx.CTV.trangThai === 'no') {
+              return { ...tx, CTV: { ...tx.CTV, trangThai: 'wait' } };
+            }
+            return tx;
+          });
+
+          const success = await updateBillJson(updatedTransactions, sha);
+          if (success) {
+            alert(`Bạn đã gửi yêu cầu rút tiền thành công cho các hóa đơn: ${billIds} vui lòng chờ Mr.Tattoo xử lý trong 1 - 2 ngày làm việc`);
+            await displayTransactions(); // Tải lại bảng
+          } else {
+            alert('Lỗi khi gửi yêu cầu rút tiền. Vui lòng thử lại!');
+          }
+        }
+
         // Placeholder cho lịch sử rút tiền
         function showWithdrawalHistory() {
           alert('Chức năng lịch sử rút tiền chưa được triển khai!');
         }
-
-        // Gán sự kiện cho nút
-        document.querySelector('button[onclick="showTransactionHistory()"]').addEventListener('click', showTransactionHistory);
 
         // Xử lý đăng xuất
         function logout() {
@@ -332,6 +386,9 @@
         logoutButton.textContent = 'Đăng xuất';
         logoutButton.onclick = logout;
         document.querySelector('.container').appendChild(logoutButton);
+
+        // Tải bảng giao dịch ngay khi vào trang
+        await displayTransactions();
       })();
     }
   </script>
