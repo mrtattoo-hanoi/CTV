@@ -11,7 +11,7 @@
       "bill_amount": 5000000,
       "commission": 500000,
       "CTV": {
-        "id": "A-1001",
+        "id": "T-1001",
         "phone": "0377616886",
         "trangThai": "no"
       }
@@ -27,7 +27,7 @@
       "bill_amount": 7500000,
       "commission": 750000,
       "CTV": {
-        "id": "A-1002",
+        "id": "T-1001",
         "phone": "0981234567",
         "trangThai": "yes"
       }
@@ -43,7 +43,7 @@
       "bill_amount": 12000000,
       "commission": 1200000,
       "CTV": {
-        "id": "A-1003",
+        "id": "T-1002",
         "phone": "0912345678",
         "trangThai": "no"
       }
@@ -59,7 +59,7 @@
       "bill_amount": 3000000,
       "commission": 300000,
       "CTV": {
-        "id": "A-1004",
+        "id": "A-1002",
         "phone": "0978765432",
         "trangThai": "yes"
       }
