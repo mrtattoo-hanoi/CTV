@@ -5,126 +5,127 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Thông tin cộng tác viên - Mr.Tattoo Hanoi</title>
   <style>
-    body { 
-      font-family: Arial, sans-serif; 
-      margin: 20px; 
-      background-color: #f4f4f4; 
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background-color: #f4f4f4;
     }
-    .container { 
-      max-width: 600px; 
-      margin: auto; 
-      background: white; 
-      padding: 30px; 
-      border-radius: 8px; 
-      box-shadow: 0 0 10px rgba(0,0,0,0.1); 
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
-    h2, h3 { 
-      color: #333; 
+    h2, h3 {
+      color: #333;
     }
-    .button-group { 
-      display: flex; 
-      gap: 10px; 
-      margin-top: 20px; 
+    .error {
+      color: red;
+      font-size: 0.9em;
+      margin-top: 10px;
+      display: none;
     }
-    button { 
-      padding: 10px 20px; 
-      background-color: #4CAF50; 
-      color: white; 
-      border: none; 
-      cursor: pointer; 
-      border-radius: 4px; 
-      flex: 1; 
+    button {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+      margin-top: 10px;
     }
-    button:hover { 
-      background-color: #45a049; 
+    button:hover {
+      background-color: #45a049;
     }
-    table { 
-      width: 100%; 
-      border-collapse: collapse; 
-      margin-top: 20px; 
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      display: none;
     }
-    th, td { 
-      border: 1px solid #ddd; 
-      padding: 8px; 
-      text-align: left; 
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
     }
-    th { 
-      background-color: #f2f2f2; 
+    th {
+      background-color: #f2f2f2;
     }
-    .bill-link { 
-      color: #4CAF50; 
-      text-decoration: none; 
-      cursor: pointer; 
-    }
-    .bill-link:hover { 
-      text-decoration: underline; 
-    }
-    .popup { 
-      display: none; 
-      position: fixed; 
-      top: 50%; 
-      left: 50%; 
-      transform: translate(-50%, -50%); 
-      background: white; 
-      padding: 20px; 
-      border-radius: 8px; 
-      box-shadow: 0 0 10px rgba(0,0,0,0.3); 
-      max-width: 500px; 
-      width: 90%; 
-      z-index: 1000; 
-    }
-    .popup-overlay { 
-      display: none; 
-      position: fixed; 
-      top: 0; 
-      left: 0; 
-      width: 100%; 
-      height: 100%; 
-      background: rgba(0,0,0,0.5); 
-      z-index: 999; 
-    }
-    .popup-content { 
-      margin-bottom: 20px; 
-    }
-    .popup-content p { 
-      margin: 5px 0; 
-    }
-    .close-button { 
-      padding: 10px 20px; 
-      background-color: #4CAF50; 
-      color: white; 
-      border: none; 
-      cursor: pointer; 
-      border-radius: 4px; 
-    }
-    .close-button:hover { 
-      background-color: #45a049; 
-    }
-    .error { 
-      color: red; 
-      font-size: 0.9em; 
-      margin-top: 10px; 
-      display: none; 
-    }
+   .bill-link {
+  color: #4CAF50;
+  text-decoration: none;
+  cursor: pointer;
+}
+.bill-link:hover {
+  text-decoration: underline;
+}
+.popup {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  max-width: 500px;
+  width: 90%;
+  z-index: 1000;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+.popup-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: 999;
+}
+.popup-content {
+  margin-bottom: 20px;
+}
+.popup-content p {
+  margin: 5px 0;
+}
+.popup-content img {
+  max-width: 100%;
+  height: auto;
+  margin: 5px 0;
+  display: block;
+}
+.close-button {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+.close-button:hover {
+  background-color: #45a049;
+}
   </style>
 </head>
 <body>
   <div class="container">
     <h2>Xin chào cộng tác viên</h2>
     <h3>Thông tin cá nhân của bạn</h3>
-    <p><strong>ID của bạn là:</strong> <span id="collab-id"></span></p>
-    <p><strong>Tên đăng nhập:</strong> <span id="collab-username"></span></p>
-    <p><strong>Họ và tên:</strong> <span id="collab-name"></span></p>
-    <p><strong>Số điện thoại:</strong> <span id="collab-phone"></span></p>
-    <p><strong>Email:</strong> <span id="collab-email"></span></p>
-    <p><strong>Tổng số tiền hoa hồng:</strong> <span id="collab-commission">0</span> VNĐ</p>
-    
-    <div class="button-group">
-      <button onclick="requestWithdrawal()">Yêu cầu rút tiền</button>
-      <button onclick="showWithdrawalHistory()">Lịch sử rút tiền</button>
-    </div>
-    
-    <p id="table-error" class="error"></p>
+    <p><strong>ID của bạn là:</strong> <span id="collab-id">Đang tải...</span></p>
+    <p><strong>Tên đăng nhập:</strong> <span id="collab-username">Đang tải...</span></p>
+    <p><strong>Họ và tên:</strong> <span id="collab-name">Đang tải...</span></p>
+    <p><strong>Số điện thoại:</strong> <span id="collab-phone">Đang tải...</span></p>
+    <p><strong>Email:</strong> <span id="collab-email">Đang tải...</span></p>
+    <p><strong>Ngân hàng:</strong> <span id="collab-bankName">Đang tải...</span></p>
+    <p><strong>Số tài khoản:</strong> <span id="collab-bankNumb">Đang tải...</span></p>
+    <p><strong>Tổng số tiền có thể rút:</strong> <span id="collab-withdrawable">Đang tải...</span> VNĐ</p>
+    <p id="error-message" class="error"></p>
+    <button onclick="toggleTransactionTable()">Xem Hóa Đơn</button>
     <table id="transaction-table">
       <thead>
         <tr>
@@ -135,16 +136,16 @@
       </thead>
       <tbody id="transaction-table-body"></tbody>
     </table>
-
+    <button onclick="logout()">Đăng xuất</button>
     <div class="popup-overlay" id="popup-overlay"></div>
-    <div class="popup" id="popup">
-      <div class="popup-content" id="popup-content"></div>
-      <button class="close-button" onclick="closePopup()">Đóng</button>
-    </div>
+<div class="popup" id="popup">
+  <div class="popup-content" id="popup-content"></div>
+  <button class="close-button" onclick="closePopup()">Đóng</button>
+</div>
   </div>
 
   <script>
-    // Lấy API key từ k.txt
+    // Fetch API key from k.txt
     async function getApiKey() {
       try {
         const response = await fetch('https://raw.githubusercontent.com/mrtattoo-hanoi/CTV/main/k.txt');
@@ -158,7 +159,7 @@
       }
     }
 
-    // Lấy thông tin người dùng từ CTV.json dựa trên userName
+    // Fetch user data from CTV.json based on userName
     async function getUserData(userName) {
       const GITHUB_TOKEN = await getApiKey();
       if (!GITHUB_TOKEN) {
@@ -183,11 +184,11 @@
       }
     }
 
-    // Lấy dữ liệu từ bill.json
-    async function loadTransactionData() {
+    // Fetch transaction data from bill.json
+    async function getTransactionData() {
       const GITHUB_TOKEN = await getApiKey();
       if (!GITHUB_TOKEN) {
-        return { transactions: [], sha: null };
+        return [];
       }
 
       try {
@@ -200,200 +201,163 @@
         if (!response.ok) throw new Error('Lỗi khi lấy bill.json: ' + response.status);
         const fileData = await response.json();
         const content = JSON.parse(atob(fileData.content));
-        return { transactions: content.transactions || [], sha: fileData.sha };
+        return content.transactions || [];
       } catch (error) {
         console.error('Lỗi khi lấy dữ liệu bill.json:', error);
-        return { transactions: [], sha: null };
+        return [];
       }
     }
 
-    // Cập nhật bill.json
-    async function updateBillJson(updatedTransactions, sha) {
-      const GITHUB_TOKEN = await getApiKey();
-      if (!GITHUB_TOKEN) {
-        console.error('Không có API key để cập nhật bill.json');
-        return { success: false, message: 'Không có API key' };
-      }
-
-      try {
-        const response = await fetch('https://api.github.com/repos/mrtattoo-hanoi/CTV/contents/bill.json', {
-          method: 'PUT',
-          headers: {
-            'Authorization': `Bearer ${GITHUB_TOKEN}`,
-            'Accept': 'application/vnd.github+json',
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            message: 'Cập nhật trạng thái rút tiền',
-            content: btoa(unescape(encodeURIComponent(JSON.stringify({ transactions: updatedTransactions }, null, 2)))),
-            sha: sha
-          })
-        });
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error('Lỗi khi cập nhật bill.json: ' + response.status + ' - ' + (errorData.message || 'Unknown error'));
-        }
-        return { success: true };
-      } catch (error) {
-        console.error('Lỗi khi cập nhật bill.json:', error);
-        return { success: false, message: error.message };
+    // Toggle transaction table visibility
+    function toggleTransactionTable() {
+      const table = document.getElementById('transaction-table');
+      const button = document.querySelector('button[onclick="toggleTransactionTable()"]');
+      if (table.style.display === 'none' || table.style.display === '') {
+        table.style.display = 'table';
+        // Load transactions when table is shown
+        loadAndDisplayTransactions();
+        button.textContent = 'Ẩn Hóa Đơn';
+      } else {
+        table.style.display = 'none';
+        button.textContent = 'Xem Hóa Đơn';
       }
     }
 
-    // Kiểm tra userName từ localStorage
-    const userName = localStorage.getItem('userName');
-    if (!userName) {
-      window.location.href = 'index.html';
+    // Show bill details in popup
+    function showBillDetails(transaction) {
+  const popup = document.getElementById('popup');
+  const popupContent = document.getElementById('popup-content');
+  const popupOverlay = document.getElementById('popup-overlay');
+  // Base URL cho GitHub Pages
+  const baseImageUrl = 'https://raw.githubusercontent.com/mrtattoo-hanoi/CTV/main';
+  // Base URL cho cục bộ (nếu cần)
+  const localBaseImageUrl = './';
+  // Xác định môi trường (có thể thay đổi tùy theo cách bạn triển khai)
+  const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname === '';
+  const currentBaseUrl = isLocal ? localBaseImageUrl : baseImageUrl;
+
+  // Ánh xạ link ảnh
+  const imagesHtml = (transaction.anh || []).map(url => {
+    let fullUrl;
+    if (isLocal) {
+      // Cục bộ: ánh xạ "anh/anh1.jpg" hoặc "/anh1.jpg" thành "./anh/anh1.jpg" hoặc "./anh1.jpg"
+      fullUrl = url.startsWith('anh/') || url.startsWith('/anh/') ? `${currentBaseUrl}${url.replace(/^\/*/, 'anh/')}` : url;
     } else {
-      // Tải và hiển thị thông tin
-      (async () => {
-        const errorElement = document.getElementById('table-error');
-        errorElement.style.display = 'none';
+      // GitHub Pages: ánh xạ "anh/anh1.jpg" hoặc "/anh1.jpg" thành "https://raw.githubusercontent.com/mrtattoo-hanoi/CTV/main/anh/anh1.jpg"
+      fullUrl = url.startsWith('anh/') || url.startsWith('/anh/') ? `${currentBaseUrl}/${url.replace(/^\/*/, 'anh/')}` : url;
+    }
+    return `<img src="${fullUrl}" alt="Hình ảnh giao dịch" onerror="this.src='https://via.placeholder.com/150?text=Ảnh+không+tồn+tại'; this.alt='Ảnh không tồn tại';" />`;
+  }).join('');
 
-        const user = await getUserData(userName);
-        if (!user) {
-          errorElement.textContent = 'Không tìm thấy thông tin người dùng cho: ' + userName;
-          errorElement.style.display = 'block';
-          document.getElementById('collab-id').textContent = 'Không có dữ liệu';
-          document.getElementById('collab-username').textContent = userName;
-          document.getElementById('collab-name').textContent = 'Không có dữ liệu';
-          document.getElementById('collab-phone').textContent = 'Không có dữ liệu';
-          document.getElementById('collab-email').textContent = 'Không có dữ liệu';
-          return;
-        }
+  popupContent.innerHTML = `
+    <p><strong>Số bill:</strong> ${transaction.transaction_id}</p>
+    <p><strong>Ngày giờ:</strong> ${new Date(transaction.date).toLocaleString('vi-VN')}</p>
+    <p><strong>Tên khách:</strong> ${transaction.infoKhach.ten}</p>
+    <p><strong>Quốc gia:</strong> ${transaction.infoKhach.quocGia}</p>
+    <p><strong>Thông tin hình xăm:</strong> ${transaction.infoKhach.tattooInfo}</p>
+    <p><strong>Số tiền bill:</strong> ${(transaction.bill_amount || 0).toLocaleString()} VNĐ</p>
+    <p><strong>Tiền hoa hồng:</strong> ${(transaction.commission || 0).toLocaleString()} VNĐ</p>
+    <p><strong>ID CTV:</strong> ${transaction.CTV.id}</p>
+    <p><strong>Số điện thoại CTV:</strong> ${transaction.CTV.phone}</p>
+    <p><strong>Trạng thái:</strong> ${transaction.CTV.trangThai === 'no' ? 'Chưa rút' : transaction.CTV.trangThai === 'wait' ? 'Chờ gửi' : 'Đã rút'}</p>
+    <p><strong>Hình ảnh:</strong></p>
+    ${imagesHtml || '<p>Không có hình ảnh</p>'}
+  `;
+  popup.style.display = 'block';
+  popupOverlay.style.display = 'block';
+}
 
-        // Hiển thị thông tin cá nhân
-        document.getElementById('collab-id').textContent = user.id || 'Không có dữ liệu';
-        document.getElementById('collab-username').textContent = user.userName || 'Không có dữ liệu';
-        document.getElementById('collab-name').textContent = user.name || 'Không có dữ liệu';
-        document.getElementById('collab-phone').textContent = user.phone || 'Không có dữ liệu';
-        document.getElementById('collab-email').textContent = user.email || 'Không có dữ liệu';
+function closePopup() {
+  const popup = document.getElementById('popup');
+  const popupOverlay = document.getElementById('popup-overlay');
+  popup.style.display = 'none';
+  popupOverlay.style.display = 'none';
+}
 
-        // Hàm hiển thị bảng giao dịch
-        async function displayTransactions() {
-          const table = document.getElementById('transaction-table');
-          const tableBody = document.getElementById('transaction-table-body');
-          errorElement.style.display = 'none';
-          tableBody.innerHTML = '';
-          table.style.display = 'none';
+async function loadAndDisplayTransactions() {
+  const errorElement = document.getElementById('error-message');
+  const tableBody = document.getElementById('transaction-table-body');
+  const user = await getUserData(localStorage.getItem('userName'));
+  if (!user) return;
 
-          const { transactions } = await loadTransactionData();
-          const userId = user.id;
-          const userTransactions = transactions.filter(tx => tx.CTV && tx.CTV.id === userId);
+  const transactions = await getTransactionData();
+  const userTransactions = transactions.filter(tx => tx.CTV && tx.CTV.id === user.id);
 
-          if (userTransactions.length === 0) {
-            errorElement.textContent = 'Không tìm thấy giao dịch nào cho ID: ' + userId;
-            errorElement.style.display = 'block';
-            return;
-          }
+  if (userTransactions.length === 0) {
+    errorElement.textContent = 'Không tìm thấy giao dịch nào cho ID: ' + user.id;
+    errorElement.style.display = 'block';
+    tableBody.innerHTML = '';
+    return;
+  }
 
-          // Tính tổng hoa hồng
-          const totalCommission = userTransactions
-            .filter(tx => tx.CTV.trangThai === 'no' || tx.CTV.trangThai === 'wait')
-            .reduce((sum, tx) => sum + (tx.commission || 0), 0);
-          document.getElementById('collab-commission').textContent = totalCommission.toLocaleString('vi-VN') + ' VNĐ';
+  errorElement.style.display = 'none';
+  tableBody.innerHTML = '';
+  userTransactions.forEach(tx => {
+    const row = document.createElement('tr');
+    const transactionId = `tx_${tx.transaction_id}`;
+    const statusText = tx.CTV.trangThai === 'no' ? 'Chưa rút' : tx.CTV.trangThai === 'wait' ? 'Chờ gửi' : 'Đã rút';
+    row.innerHTML = `
+      <td><span class="bill-link" id="${transactionId}">${tx.transaction_id}</span></td>
+      <td>${(tx.commission || 0).toLocaleString()} VNĐ</td>
+      <td>${statusText}</td>
+    `;
+    tableBody.appendChild(row);
+    document.getElementById(transactionId).addEventListener('click', () => showBillDetails(tx));
+  });
+}
 
-          // Hiển thị bảng giao dịch
-          table.style.display = 'table';
-          userTransactions.forEach(tx => {
-            const row = document.createElement('tr');
-            const statusText = tx.CTV.trangThai === 'no' ? 'Chưa rút' : 
-                              tx.CTV.trangThai === 'wait' ? 'Chờ gửi' : 'Đã rút';
-            const transactionId = `tx_${tx.transaction_id}`;
-            row.innerHTML = `
-              <td><span class="bill-link" id="${transactionId}">${tx.transaction_id}</span></td>
-              <td>${(tx.commission || 0).toLocaleString('vi-VN')} VNĐ</td>
-              <td>${statusText}</td>
-            `;
-            tableBody.appendChild(row);
-            document.getElementById(transactionId).addEventListener('click', () => {
-              showBillDetails(tx);
-            });
-          });
-        }
+    // Load and display user information and withdrawable amount
+    (async () => {
+      const errorElement = document.getElementById('error-message');
+      errorElement.style.display = 'none';
 
-        // Hiển thị popup chi tiết bill
-        function showBillDetails(transaction) {
-          const popup = document.getElementById('popup');
-          const popupContent = document.getElementById('popup-content');
-          const popupOverlay = document.getElementById('popup-overlay');
-
-          popupContent.innerHTML = `
-            <p><strong>Số bill:</strong> ${transaction.transaction_id}</p>
-            <p><strong>Ngày giờ:</strong> ${new Date(transaction.date).toLocaleString('vi-VN')}</p>
-            <p><strong>Tên khách:</strong> ${transaction.infoKhach.ten}</p>
-            <p><strong>Quốc gia:</strong> ${transaction.infoKhach.quocGia}</p>
-            <p><strong>Thông tin hình xăm:</strong> ${transaction.infoKhach.tattooInfo}</p>
-            <p><strong>Số tiền bill:</strong> ${(transaction.bill_amount || 0).toLocaleString('vi-VN')} VNĐ</p>
-            <p><strong>Tiền hoa hồng:</strong> ${(transaction.commission || 0).toLocaleString('vi-VN')} VNĐ</p>
-            <p><strong>ID CTV:</strong> ${transaction.CTV.id}</p>
-            <p><strong>Số điện thoại CTV:</strong> ${transaction.CTV.phone}</p>
-            <p><strong>Trạng thái:</strong> ${transaction.CTV.trangThai === 'no' ? 'Chưa rút' : 
-                                           transaction.CTV.trangThai === 'wait' ? 'Chờ gửi' : 'Đã rút'}</p>
-          `;
-          popup.style.display = 'block';
-          popupOverlay.style.display = 'block';
-        }
-
-        // Đóng popup
-        function closePopup() {
-          const popup = document.getElementById('popup');
-          const popupOverlay = document.getElementById('popup-overlay');
-          popup.style.display = 'none';
-          popupOverlay.style.display = 'none';
-        }
-
-        // Yêu cầu rút tiền
-        async function requestWithdrawal() {
-          const errorElement = document.getElementById('table-error');
-          errorElement.style.display = 'none';
-          const { transactions, sha } = await loadTransactionData();
-          const userId = user.id;
-          const pendingBills = transactions.filter(tx => tx.CTV && tx.CTV.id === userId && tx.CTV.trangThai === 'no');
-          
-          if (pendingBills.length === 0) {
-            alert('Không có hóa đơn nào để yêu cầu rút tiền!');
-            return;
-          }
-
-          const billIds = pendingBills.map(tx => tx.transaction_id).join(', ');
-          const updatedTransactions = transactions.map(tx => {
-            if (tx.CTV && tx.CTV.id === userId && tx.CTV.trangThai === 'no') {
-              return { ...tx, CTV: { ...tx.CTV, trangThai: 'wait' } };
-            }
-            return tx;
-          });
-
-          const result = await updateBillJson(updatedTransactions, sha);
-          if (result.success) {
-            alert(`Bạn đã gửi yêu cầu rút tiền thành công cho các hóa đơn: ${billIds}. Vui lòng chờ Mr.Tattoo xử lý trong 1 - 2 ngày làm việc.`);
-            await displayTransactions(); // Tải lại bảng
-          } else {
-            errorElement.textContent = `Lỗi khi gửi yêu cầu rút tiền: ${result.message}`;
-            errorElement.style.display = 'block';
-          }
-        }
-
-        // Placeholder cho lịch sử rút tiền
-        function showWithdrawalHistory() {
-          alert('Chức năng lịch sử rút tiền chưa được triển khai!');
-        }
-
-        // Xử lý đăng xuất
-        function logout() {
-          localStorage.removeItem('userName');
+      const userName = localStorage.getItem('userName');
+      if (!userName) {
+        errorElement.textContent = 'Không tìm thấy tên đăng nhập. Vui lòng đăng nhập lại.';
+        errorElement.style.display = 'block';
+        setTimeout(() => {
           window.location.href = 'index.html';
-        }
+        }, 2000);
+        return;
+      }
 
-        // Thêm nút đăng xuất
-        const logoutButton = document.createElement('button');
-        logoutButton.textContent = 'Đăng xuất';
-        logoutButton.onclick = logout;
-        document.querySelector('.container').appendChild(logoutButton);
+      const user = await getUserData(userName);
+      if (!user) {
+        errorElement.textContent = 'Không tìm thấy thông tin người dùng cho: ' + userName;
+        errorElement.style.display = 'block';
+        document.getElementById('collab-id').textContent = 'Không có dữ liệu';
+        document.getElementById('collab-username').textContent = userName;
+        document.getElementById('collab-name').textContent = 'Không có dữ liệu';
+        document.getElementById('collab-phone').textContent = 'Không có dữ liệu';
+        document.getElementById('collab-email').textContent = 'Không có dữ liệu';
+        document.getElementById('collab-bankName').textContent = 'Không có dữ liệu';
+        document.getElementById('collab-bankNumb').textContent = 'Không có dữ liệu';
+        document.getElementById('collab-withdrawable').textContent = '0';
+        return;
+      }
 
-        // Tải bảng giao dịch ngay khi vào trang
-        await displayTransactions();
-      })();
+      // Display user information
+      document.getElementById('collab-id').textContent = user.id || 'Không có dữ liệu';
+      document.getElementById('collab-username').textContent = user.userName || 'Không có dữ liệu';
+      document.getElementById('collab-name').textContent = user.name || 'Không có dữ liệu';
+      document.getElementById('collab-phone').textContent = user.phone || 'Không có dữ liệu';
+      document.getElementById('collab-email').textContent = user.email || 'Không có dữ liệu';
+      document.getElementById('collab-bankName').textContent = user.bankName || 'Không có dữ liệu';
+      document.getElementById('collab-bankNumb').textContent = user.bankNumb || 'Không có dữ liệu';
+
+      // Calculate and display withdrawable amount
+      const transactions = await getTransactionData();
+      const userTransactions = transactions.filter(tx => tx.CTV && tx.CTV.id === user.id);
+      const withdrawableAmount = userTransactions
+        .filter(tx => tx.CTV.trangThai === 'no' || tx.CTV.trangThai === 'wait')
+        .reduce((sum, tx) => sum + (tx.commission || 0), 0);
+      document.getElementById('collab-withdrawable').textContent = withdrawableAmount.toLocaleString();
+    })();
+    
+    // Logout function
+    function logout() {
+      localStorage.removeItem('userName');
+      window.location.href = 'index.html';
     }
   </script>
 </body>
