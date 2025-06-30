@@ -13,7 +13,7 @@
       "CTV": {
         "id": "T1001",
         "phone": "0377616886",
-        "trangThai": "wait"
+        "trangThai": "no"
       },
       "anh": [
         "/CTV/anh/anh1.jpg",
@@ -33,7 +33,7 @@
       "CTV": {
         "id": "T1001",
         "phone": "0981234567",
-        "trangThai": "yes"
+        "trangThai": "no"
       },
       "anh": [
         "/CTV/anh/anh1.jpg",
@@ -53,7 +53,7 @@
       "CTV": {
         "id": "T1002",
         "phone": "0912345678",
-        "trangThai": "wait"
+        "trangThai": "no"
       },
       "anh": [
         "/CTV/anh/anh1.jpg",
