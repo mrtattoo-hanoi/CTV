@@ -39,6 +39,18 @@
     button:hover {
       background-color: #45a049;
     }
+    .request-button {
+      padding: 8px 16px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
+    .request-button:hover {
+      background-color: #0056b3;
+    }
     table {
       width: 100%;
       border-collapse: collapse;
@@ -53,63 +65,78 @@
     th {
       background-color: #f2f2f2;
     }
-   .bill-link {
-  color: #4CAF50;
-  text-decoration: none;
-  cursor: pointer;
-}
-.bill-link:hover {
-  text-decoration: underline;
-}
-.popup {
-  display: none;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.3);
-  max-width: 500px;
-  width: 90%;
-  z-index: 1000;
-  max-height: 80vh;
-  overflow-y: auto;
-}
-.popup-overlay {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.5);
-  z-index: 999;
-}
-.popup-content {
-  margin-bottom: 20px;
-}
-.popup-content p {
-  margin: 5px 0;
-}
-.popup-content img {
+    .bill-link {
+      color: #4CAF50;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .bill-link:hover {
+      text-decoration: underline;
+    }
+    .popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      max-width: 500px;
+      width: 90%;
+      z-index: 1000;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+    .popup-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 999;
+    }
+    .popup-content {
+      margin-bottom: 20px;
+    }
+    .popup-content p {
+      margin: 5px 0;
+    }
+   .popup-content img {
   max-width: 100%;
   height: auto;
   margin: 5px 0;
   display: block;
+  width: 500px; /* Mặc định cho PC */
 }
-.close-button {
-  padding: 10px 20px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  cursor: pointer;
-  border-radius: 4px;
+
+/* Điện thoại: màn hình nhỏ hơn 600px */
+@media (max-width: 600px) {
+  .popup-content img {
+    width: 250px; /* Chiều rộng cho điện thoại */
+  }
 }
-.close-button:hover {
-  background-color: #45a049;
+
+/* PC: màn hình từ 600px trở lên */
+@media (min-width: 600px) {
+  .popup-content img {
+    width: 500px; /* Chiều rộng cho PC */
+  }
 }
+    .close-button {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    .close-button:hover {
+      background-color: #45a049;
+    }
   </style>
 </head>
 <body>
@@ -138,10 +165,10 @@
     </table>
     <button onclick="logout()">Đăng xuất</button>
     <div class="popup-overlay" id="popup-overlay"></div>
-<div class="popup" id="popup">
-  <div class="popup-content" id="popup-content"></div>
-  <button class="close-button" onclick="closePopup()">Đóng</button>
-</div>
+    <div class="popup" id="popup">
+      <div class="popup-content" id="popup-content"></div>
+      <button class="close-button" onclick="closePopup()">Đóng</button>
+    </div>
   </div>
 
   <script>
@@ -200,11 +227,71 @@
         });
         if (!response.ok) throw new Error('Lỗi khi lấy bill.json: ' + response.status);
         const fileData = await response.json();
-        const content = JSON.parse(atob(fileData.content));
-        return content.transactions || [];
+        return { transactions: JSON.parse(atob(fileData.content)).transactions || [], sha: fileData.sha };
       } catch (error) {
         console.error('Lỗi khi lấy dữ liệu bill.json:', error);
-        return [];
+        return { transactions: [], sha: null };
+      }
+    }
+
+    // Update bill.json on GitHub
+    async function updateBillJson(updatedTransactions, sha) {
+      const GITHUB_TOKEN = await getApiKey();
+      if (!GITHUB_TOKEN) {
+        return false;
+      }
+
+      try {
+        const response = await fetch('https://api.github.com/repos/mrtattoo-hanoi/CTV/contents/bill.json', {
+          method: 'PUT',
+          headers: {
+            'Authorization': `Bearer ${GITHUB_TOKEN}`,
+            'Accept': 'application/vnd.github+json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            message: 'Update bill.json with new transaction status',
+            content: btoa(JSON.stringify({ transactions: updatedTransactions }, null, 2)),
+            sha: sha
+          })
+        });
+        if (!response.ok) throw new Error('Lỗi khi cập nhật bill.json: ' + response.status);
+        return true;
+      } catch (error) {
+        console.error('Lỗi khi cập nhật bill.json:', error);
+        return false;
+      }
+    }
+
+    // Request withdrawal by updating trangThai
+    async function requestWithdrawal(transactionId) {
+      const errorElement = document.getElementById('error-message');
+      const { transactions, sha } = await getTransactionData();
+      const transaction = transactions.find(tx => tx.transaction_id === transactionId);
+      if (!transaction || transaction.CTV.trangThai !== 'no') {
+        errorElement.textContent = 'Giao dịch không hợp lệ hoặc đã được yêu cầu rút.';
+        errorElement.style.display = 'block';
+        setTimeout(() => { errorElement.style.display = 'none'; }, 10000);
+        return;
+      }
+
+      transaction.CTV.trangThai = 'wait';
+      const success = await updateBillJson(transactions, sha);
+      if (success) {
+        // Refresh table and withdrawable amount
+        await loadAndDisplayTransactions();
+        await updateWithdrawableAmount();
+        errorElement.textContent = 'Yêu cầu rút tiền thành công! Mr.Tattoo sẽ chuyển khoản cho bạn ngay trong 1 - 2 ngày làm việc';
+        errorElement.style.color = 'green';
+        errorElement.style.display = 'block';
+        setTimeout(() => {
+          errorElement.style.display = 'none';
+          errorElement.style.color = 'red';
+        }, 10000);
+      } else {
+        errorElement.textContent = 'Lỗi khi gửi yêu cầu rút tiền. Vui lòng thử lại.';
+        errorElement.style.display = 'block';
+        setTimeout(() => { errorElement.style.display = 'none'; }, 10000);
       }
     }
 
@@ -214,7 +301,6 @@
       const button = document.querySelector('button[onclick="toggleTransactionTable()"]');
       if (table.style.display === 'none' || table.style.display === '') {
         table.style.display = 'table';
-        // Load transactions when table is shown
         loadAndDisplayTransactions();
         button.textContent = 'Ẩn Hóa Đơn';
       } else {
@@ -225,69 +311,85 @@
 
     // Show bill details in popup
     function showBillDetails(transaction) {
-  const popup = document.getElementById('popup');
-  const popupContent = document.getElementById('popup-content');
-  const popupOverlay = document.getElementById('popup-overlay');
-  // Sử dụng link tương đối trực tiếp từ bill.json
-  const imagesHtml = (transaction.anh || []).map(url => {
-    return `<img src="${url}" alt="Hình ảnh giao dịch" style="width: 100%; height: auto;" onerror="this.src='https://via.placeholder.com/150?text=Ảnh+không+tồn+tại'; this.alt='Ảnh không tồn tại';" />`;
-  }).join('');
-  popupContent.innerHTML = `
-    <p><strong>Số bill:</strong> ${transaction.transaction_id}</p>
-    <p><strong>Ngày giờ:</strong> ${new Date(transaction.date).toLocaleString('vi-VN')}</p>
-    <p><strong>Tên khách:</strong> ${transaction.infoKhach.ten}</p>
-    <p><strong>Quốc gia:</strong> ${transaction.infoKhach.quocGia}</p>
-    <p><strong>Thông tin hình xăm:</strong> ${transaction.infoKhach.tattooInfo}</p>
-    <p><strong>Số tiền bill:</strong> ${(transaction.bill_amount || 0).toLocaleString()} VNĐ</p>
-    <p><strong>Tiền hoa hồng:</strong> ${(transaction.commission || 0).toLocaleString()} VNĐ</p>
-    <p><strong>ID CTV:</strong> ${transaction.CTV.id}</p>
-    <p><strong>Số điện thoại CTV:</strong> ${transaction.CTV.phone}</p>
-    <p><strong>Trạng thái:</strong> ${transaction.CTV.trangThai === 'no' ? 'Chưa rút' : transaction.CTV.trangThai === 'wait' ? 'Chờ gửi' : 'Đã rút'}</p>
-    <p><strong>Hình ảnh:</strong></p>
-    ${imagesHtml || '<p>Không có hình ảnh</p>'}
-  `;
-  popup.style.display = 'block';
-  popupOverlay.style.display = 'block';
-}
+      const popup = document.getElementById('popup');
+      const popupContent = document.getElementById('popup-content');
+      const popupOverlay = document.getElementById('popup-overlay');
+      const imagesHtml = (transaction.anh || []).map(url => {
+        return `<img src="${url}" alt="Hình ảnh giao dịch" style="width: 100%; height: auto;" onerror="this.src='https://via.placeholder.com/150?text=Ảnh+không+tồn+tại'; this.alt='Ảnh không tồn tại';" />`;
+      }).join('');
+      popupContent.innerHTML = `
+        <p><strong>Số bill:</strong> ${transaction.transaction_id}</p>
+        <p><strong>Ngày giờ:</strong> ${new Date(transaction.date).toLocaleString('vi-VN')}</p>
+        <p><strong>Tên khách:</strong> ${transaction.infoKhach.ten}</p>
+        <p><strong>Quốc gia:</strong> ${transaction.infoKhach.quocGia}</p>
+        <p><strong>Thông tin hình xăm:</strong> ${transaction.infoKhach.tattooInfo}</p>
+        <p><strong>Số tiền bill:</strong> ${(transaction.bill_amount || 0).toLocaleString()} VNĐ</p>
+        <p><strong>Tiền hoa hồng:</strong> ${(transaction.commission || 0).toLocaleString()} VNĐ</p>
+        <p><strong>ID CTV:</strong> ${transaction.CTV.id}</p>
+        <p><strong>Số điện thoại CTV:</strong> ${transaction.CTV.phone}</p>
+        <p><strong>Trạng thái:</strong> ${transaction.CTV.trangThai === 'no' ? 'Chưa rút' : transaction.CTV.trangThai === 'wait' ? 'Chờ gửi' : 'Đã rút'}</p>
+        <p><strong>Hình ảnh:</strong></p>
+        ${imagesHtml || '<p>Không có hình ảnh</p>'}
+      `;
+      popup.style.display = 'block';
+      popupOverlay.style.display = 'block';
+    }
 
-function closePopup() {
-  const popup = document.getElementById('popup');
-  const popupOverlay = document.getElementById('popup-overlay');
-  popup.style.display = 'none';
-  popupOverlay.style.display = 'none';
-}
+    // Close popup
+    function closePopup() {
+      const popup = document.getElementById('popup');
+      const popupOverlay = document.getElementById('popup-overlay');
+      popup.style.display = 'none';
+      popupOverlay.style.display = 'none';
+    }
 
-async function loadAndDisplayTransactions() {
-  const errorElement = document.getElementById('error-message');
-  const tableBody = document.getElementById('transaction-table-body');
-  const user = await getUserData(localStorage.getItem('userName'));
-  if (!user) return;
+    // Load and display transactions
+    async function loadAndDisplayTransactions() {
+      const errorElement = document.getElementById('error-message');
+      const tableBody = document.getElementById('transaction-table-body');
+      const user = await getUserData(localStorage.getItem('userName'));
+      if (!user) return;
 
-  const transactions = await getTransactionData();
-  const userTransactions = transactions.filter(tx => tx.CTV && tx.CTV.id === user.id);
+      const { transactions } = await getTransactionData();
+      const userTransactions = transactions.filter(tx => tx.CTV && tx.CTV.id === user.id);
 
-  if (userTransactions.length === 0) {
-    errorElement.textContent = 'Không tìm thấy giao dịch nào cho ID: ' + user.id;
-    errorElement.style.display = 'block';
-    tableBody.innerHTML = '';
-    return;
-  }
+      if (userTransactions.length === 0) {
+        errorElement.textContent = 'Không tìm thấy giao dịch nào cho ID: ' + user.id;
+        errorElement.style.display = 'block';
+        tableBody.innerHTML = '';
+        return;
+      }
 
-  errorElement.style.display = 'none';
-  tableBody.innerHTML = '';
-  userTransactions.forEach(tx => {
-    const row = document.createElement('tr');
-    const transactionId = `tx_${tx.transaction_id}`;
-    const statusText = tx.CTV.trangThai === 'no' ? 'Chưa rút' : tx.CTV.trangThai === 'wait' ? 'Chờ gửi' : 'Đã rút';
-    row.innerHTML = `
-      <td><span class="bill-link" id="${transactionId}">${tx.transaction_id}</span></td>
-      <td>${(tx.commission || 0).toLocaleString()} VNĐ</td>
-      <td>${statusText}</td>
-    `;
-    tableBody.appendChild(row);
-    document.getElementById(transactionId).addEventListener('click', () => showBillDetails(tx));
-  });
-}
+      errorElement.style.display = 'none';
+      tableBody.innerHTML = '';
+      userTransactions.forEach(tx => {
+        const row = document.createElement('tr');
+        const transactionId = `tx_${tx.transaction_id}`;
+        const statusContent = tx.CTV.trangThai === 'no' 
+          ? `<button class="request-button" onclick="requestWithdrawal('${tx.transaction_id}')">Yêu cầu rút $</button>`
+          : tx.CTV.trangThai === 'wait' ? 'Chờ gửi' : 'Đã rút';
+        row.innerHTML = `
+          <td><span class="bill-link" id="${transactionId}">${tx.transaction_id}</span></td>
+          <td>${(tx.commission || 0).toLocaleString()} VNĐ</td>
+          <td>${statusContent}</td>
+        `;
+        tableBody.appendChild(row);
+        document.getElementById(transactionId).addEventListener('click', () => showBillDetails(tx));
+      });
+    }
+
+    // Update withdrawable amount
+    async function updateWithdrawableAmount() {
+      const user = await getUserData(localStorage.getItem('userName'));
+      if (!user) return;
+
+      const { transactions } = await getTransactionData();
+      const userTransactions = transactions.filter(tx => tx.CTV && tx.CTV.id === user.id);
+      const withdrawableAmount = userTransactions
+        .filter(tx => tx.CTV.trangThai === 'no' || tx.CTV.trangThai === 'wait')
+        .reduce((sum, tx) => sum + (tx.commission || 0), 0);
+      document.getElementById('collab-withdrawable').textContent = withdrawableAmount.toLocaleString();
+    }
 
     // Load and display user information and withdrawable amount
     (async () => {
@@ -319,7 +421,6 @@ async function loadAndDisplayTransactions() {
         return;
       }
 
-      // Display user information
       document.getElementById('collab-id').textContent = user.id || 'Không có dữ liệu';
       document.getElementById('collab-username').textContent = user.userName || 'Không có dữ liệu';
       document.getElementById('collab-name').textContent = user.name || 'Không có dữ liệu';
@@ -328,15 +429,9 @@ async function loadAndDisplayTransactions() {
       document.getElementById('collab-bankName').textContent = user.bankName || 'Không có dữ liệu';
       document.getElementById('collab-bankNumb').textContent = user.bankNumb || 'Không có dữ liệu';
 
-      // Calculate and display withdrawable amount
-      const transactions = await getTransactionData();
-      const userTransactions = transactions.filter(tx => tx.CTV && tx.CTV.id === user.id);
-      const withdrawableAmount = userTransactions
-        .filter(tx => tx.CTV.trangThai === 'no' || tx.CTV.trangThai === 'wait')
-        .reduce((sum, tx) => sum + (tx.commission || 0), 0);
-      document.getElementById('collab-withdrawable').textContent = withdrawableAmount.toLocaleString();
+      await updateWithdrawableAmount();
     })();
-    
+
     // Logout function
     function logout() {
       localStorage.removeItem('userName');
