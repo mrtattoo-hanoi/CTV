@@ -8,7 +8,8 @@
       "soTien": 5000000,
       "donVi": "VND"
     },
-    "ghiChu": "Khách hàng thân thiết, thanh toán đúng hạn"
+    "ghiChu": "Khách hàng thân thiết, thanh toán đúng hạn",
+    "bill": ["BILL001", "BILL002"]
   },
   {
     "stt": "KH10002",
@@ -19,7 +20,8 @@
       "soTien": 1000,
       "donVi": "USD"
     },
-    "ghiChu": "Cần nhắc nhở thanh toán trước hạn"
+    "ghiChu": "Cần nhắc nhở thanh toán trước hạn",
+    "bill": ["BILL003", "BILL004"]
   },
   {
     "stt": "KH10003",
@@ -30,6 +32,7 @@
       "soTien": 750,
       "donVi": "EURO"
     },
-    "ghiChu": "Khách hàng mới, đang xem xét hợp đồng dài hạn"
+    "ghiChu": "Khách hàng mới, đang xem xét hợp đồng dài hạn",
+    "bill": ["BILL005"]
   }
 ]
