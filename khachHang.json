@@ -1,0 +1,35 @@
+[
+  {
+    "stt": "KH10001",
+    "ten": "Nguyen Van A",
+    "quocGia": "Vietnam",
+    "soDienThoai": "0901234567",
+    "congNo": {
+      "soTien": 5000000,
+      "donVi": "VND"
+    },
+    "ghiChu": "Khách hàng thân thiết, thanh toán đúng hạn"
+  },
+  {
+    "stt": "KH10002",
+    "ten": "John Doe",
+    "quocGia": "United States",
+    "soDienThoai": "+12025550123",
+    "congNo": {
+      "soTien": 1000,
+      "donVi": "USD"
+    },
+    "ghiChu": "Cần nhắc nhở thanh toán trước hạn"
+  },
+  {
+    "stt": "KH10003",
+    "ten": "Anna Schmidt",
+    "quocGia": "Germany",
+    "soDienThoai": "+49123456789",
+    "congNo": {
+      "soTien": 750,
+      "donVi": "EURO"
+    },
+    "ghiChu": "Khách hàng mới, đang xem xét hợp đồng dài hạn"
+  }
+]
