@@ -8,8 +8,11 @@
       "soTien": 5000000,
       "donVi": "VND"
     },
-    "ghiChu": "Khách hàng thân thiết, thanh toán đúng hạn",
-    "bill": ["B100001", "B100002"]
+    "ghiChu": "KhÃ¡ch hÃ ng thÃ¢n thiáº¿t, thanh toÃ¡n ÄÃºng háº¡n",
+    "bill": [
+      "B100001",
+      "B100002"
+    ]
   },
   {
     "stt": "KH10002",
@@ -20,8 +23,11 @@
       "soTien": 1000,
       "donVi": "USD"
     },
-    "ghiChu": "Cần nhắc nhở thanh toán trước hạn",
-    "bill": ["B100003", "B100004"]
+    "ghiChu": "Cáº§n nháº¯c nhá» thanh toÃ¡n trÆ°á»c háº¡n",
+    "bill": [
+      "B100003",
+      "B100004"
+    ]
   },
   {
     "stt": "KH10003",
@@ -32,7 +38,23 @@
       "soTien": 750,
       "donVi": "EURO"
     },
-    "ghiChu": "Khách hàng mới, đang xem xét hợp đồng dài hạn",
-    "bill": ["B100005"]
+    "ghiChu": "KhÃ¡ch hÃ ng má»i, Äang xem xÃ©t há»£p Äá»ng dÃ i háº¡n",
+    "bill": [
+      "B100005"
+    ]
+  },
+  {
+    "stt": "KH10004",
+    "ten": "Nguyễn Sơn",
+    "quocGia": "Việt",
+    "soDienThoai": "0321444678",
+    "congNo": {
+      "soTien": 100000,
+      "donVi": "VND"
+    },
+    "ghiChu": "Khách nợ",
+    "bill": [
+      "B100007"
+    ]
   }
 ]
