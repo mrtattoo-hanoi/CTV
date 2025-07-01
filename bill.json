@@ -87,6 +87,28 @@
         "/CTV/anh/anh1.jpg",
         "/CTV/anh/anh2.jpg"
       ]
+    },
+    {
+      "transaction_id": "B100005",
+      "date": "2025-07-01T08:47:32.575Z",
+      "infoKhach": {
+        "ten": "Alex2",
+        "quocGia": "Hàn",
+        "tattooInfo": "Không có"
+      },
+      "bill_amount": 468903.60000000003,
+      "bill_amount_usd": 18,
+      "tyGia": "1 USD = 26.050 VND",
+      "commission": "52100",
+      "CTV": {
+        "id": "T1001",
+        "phone": "0123456789",
+        "trangThai": "no"
+      },
+      "anh": [
+        "/CTV/anh/anh1.jpg",
+        "/CTV/anh/anh2.jpg"
+      ]
     }
   ]
 }
