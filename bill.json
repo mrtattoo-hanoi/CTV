@@ -1,7 +1,7 @@
 {
   "transactions": [
     {
-      "transaction_id": "BILL001",
+      "transaction_id": "B100001",
       "date": "2025-06-29T10:00:00Z",
       "infoKhach": {
         "ten": "Alex",
@@ -9,6 +9,8 @@
         "tattooInfo": "mini tiger tattoo"
       },
       "bill_amount": 5000000,
+      "bill_amount_usd": 100,
+      "tyGia": "1 USD = 26000VND",
       "commission": 500000,
       "CTV": {
         "id": "T1001",
@@ -21,7 +23,7 @@
       ]
     },
     {
-      "transaction_id": "BILL002",
+      "transaction_id": "B100002",
       "date": "2025-06-30T14:30:00Z",
       "infoKhach": {
         "ten": "Emma",
@@ -29,6 +31,8 @@
         "tattooInfo": "small rose tattoo"
       },
       "bill_amount": 7500000,
+      "bill_amount_usd": 100,
+      "tyGia": "1 USD = 26000VND",
       "commission": 750000,
       "CTV": {
         "id": "T1001",
@@ -41,7 +45,7 @@
       ]
     },
     {
-      "transaction_id": "BILL003",
+      "transaction_id": "B100003",
       "date": "2025-06-30T16:45:00Z",
       "infoKhach": {
         "ten": "Liam",
@@ -49,6 +53,8 @@
         "tattooInfo": "dragon sleeve tattoo"
       },
       "bill_amount": 12000000,
+      "bill_amount_usd": 100,
+      "tyGia": "1 USD = 26000VND",
       "commission": 1200000,
       "CTV": {
         "id": "T1002",
@@ -61,7 +67,7 @@
       ]
     },
     {
-      "transaction_id": "BILL004",
+      "transaction_id": "B100004",
       "date": "2025-06-30T18:20:00Z",
       "infoKhach": {
         "ten": "Sophie",
@@ -69,6 +75,8 @@
         "tattooInfo": "butterfly ankle tattoo"
       },
       "bill_amount": 3000000,
+      "bill_amount_usd": 100,
+      "tyGia": "1 USD = 26000VND",
       "commission": 300000,
       "CTV": {
         "id": "T1002",
