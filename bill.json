@@ -93,8 +93,8 @@
       "date": "2025-07-01T08:47:32.575Z",
       "infoKhach": {
         "ten": "Alex2",
-        "quocGia": "HÃ n",
-        "tattooInfo": "KhÃ´ng cÃ³"
+        "quocGia": "HÃÂ n",
+        "tattooInfo": "KhÃÂ´ng cÃÂ³"
       },
       "bill_amount": 468903.60000000003,
       "bill_amount_usd": 18,
@@ -136,9 +136,9 @@
       "transaction_id": "B100007",
       "date": "2025-07-01T09:03:22.094Z",
       "infoKhach": {
-        "ten": "Nguyễn Sơn",
-        "quocGia": "Việt",
-        "tattooInfo": "Xăm nhỏ"
+        "ten": "Nguyá»n SÆ¡n",
+        "quocGia": "Viá»t",
+        "tattooInfo": "XÄm nhá»"
       },
       "bill_amount": 703354.5,
       "bill_amount_usd": 27,
@@ -153,6 +153,25 @@
         "/CTV/anh/anh1.jpg",
         "/CTV/anh/anh2.jpg"
       ]
+    },
+    {
+      "transaction_id": "B100008",
+      "date": "2025-07-01T16:21:10.316Z",
+      "infoKhach": {
+        "ten": "Nguyen AAAA",
+        "quocGia": "Châu Phi",
+        "tattooInfo": ""
+      },
+      "bill_amount": 1302509,
+      "bill_amount_usd": 50,
+      "tyGia": "1 EURO = 30.647 VND, 1 USD = 26.050 VND",
+      "commission": "130251",
+      "CTV": {
+        "id": "T1002",
+        "phone": "0987654321",
+        "trangThai": "no"
+      },
+      "anh": []
     }
   ]
 }
