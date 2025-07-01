@@ -8,7 +8,7 @@
       "soTien": 5000000,
       "donVi": "VND"
     },
-    "ghiChu": "KhÃ¡ch hÃ ng thÃ¢n thiáº¿t, thanh toÃ¡n ÄÃºng háº¡n",
+    "ghiChu": "KhÃÂ¡ch hÃÂ ng thÃÂ¢n thiÃ¡ÂºÂ¿t, thanh toÃÂ¡n ÃÂÃÂºng hÃ¡ÂºÂ¡n",
     "bill": [
       "B100001",
       "B100002"
@@ -23,7 +23,7 @@
       "soTien": 1000,
       "donVi": "USD"
     },
-    "ghiChu": "Cáº§n nháº¯c nhá» thanh toÃ¡n trÆ°á»c háº¡n",
+    "ghiChu": "CÃ¡ÂºÂ§n nhÃ¡ÂºÂ¯c nhÃ¡Â»Â thanh toÃÂ¡n trÃÂ°Ã¡Â»Âc hÃ¡ÂºÂ¡n",
     "bill": [
       "B100003",
       "B100004"
@@ -38,23 +38,37 @@
       "soTien": 750,
       "donVi": "EURO"
     },
-    "ghiChu": "KhÃ¡ch hÃ ng má»i, Äang xem xÃ©t há»£p Äá»ng dÃ i háº¡n",
+    "ghiChu": "KhÃÂ¡ch hÃÂ ng mÃ¡Â»Âi, ÃÂang xem xÃÂ©t hÃ¡Â»Â£p ÃÂÃ¡Â»Âng dÃÂ i hÃ¡ÂºÂ¡n",
     "bill": [
       "B100005"
     ]
   },
   {
     "stt": "KH10004",
-    "ten": "Nguyễn Sơn",
-    "quocGia": "Việt",
+    "ten": "Nguyá»n SÆ¡n",
+    "quocGia": "Viá»t",
     "soDienThoai": "0321444678",
     "congNo": {
       "soTien": 100000,
       "donVi": "VND"
     },
-    "ghiChu": "Khách nợ",
+    "ghiChu": "KhÃ¡ch ná»£",
     "bill": [
       "B100007"
+    ]
+  },
+  {
+    "stt": "KH10005",
+    "ten": "Nguyen AAAA",
+    "quocGia": "Châu Phi",
+    "soDienThoai": "0377777777",
+    "congNo": {
+      "soTien": 0,
+      "donVi": "VND"
+    },
+    "ghiChu": "Khách da đen",
+    "bill": [
+      "B100008"
     ]
   }
 ]
