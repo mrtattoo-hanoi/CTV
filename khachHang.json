@@ -8,7 +8,7 @@
       "soTien": 5000000,
       "donVi": "VND"
     },
-    "ghiChu": "KhÃÂ¡ch hÃÂ ng thÃÂ¢n thiÃ¡ÂºÂ¿t, thanh toÃÂ¡n ÃÂÃÂºng hÃ¡ÂºÂ¡n",
+    "ghiChu": "KhÃÂÃÂ¡ch hÃÂÃÂ ng thÃÂÃÂ¢n thiÃÂ¡ÃÂºÃÂ¿t, thanh toÃÂÃÂ¡n ÃÂÃÂÃÂÃÂºng hÃÂ¡ÃÂºÃÂ¡n",
     "bill": [
       "B100001",
       "B100002"
@@ -23,7 +23,7 @@
       "soTien": 1000,
       "donVi": "USD"
     },
-    "ghiChu": "CÃ¡ÂºÂ§n nhÃ¡ÂºÂ¯c nhÃ¡Â»Â thanh toÃÂ¡n trÃÂ°Ã¡Â»Âc hÃ¡ÂºÂ¡n",
+    "ghiChu": "CÃÂ¡ÃÂºÃÂ§n nhÃÂ¡ÃÂºÃÂ¯c nhÃÂ¡ÃÂ»ÃÂ thanh toÃÂÃÂ¡n trÃÂÃÂ°ÃÂ¡ÃÂ»ÃÂc hÃÂ¡ÃÂºÃÂ¡n",
     "bill": [
       "B100003",
       "B100004"
@@ -38,21 +38,21 @@
       "soTien": 750,
       "donVi": "EURO"
     },
-    "ghiChu": "KhÃÂ¡ch hÃÂ ng mÃ¡Â»Âi, ÃÂang xem xÃÂ©t hÃ¡Â»Â£p ÃÂÃ¡Â»Âng dÃÂ i hÃ¡ÂºÂ¡n",
+    "ghiChu": "KhÃÂÃÂ¡ch hÃÂÃÂ ng mÃÂ¡ÃÂ»ÃÂi, ÃÂÃÂang xem xÃÂÃÂ©t hÃÂ¡ÃÂ»ÃÂ£p ÃÂÃÂÃÂ¡ÃÂ»ÃÂng dÃÂÃÂ i hÃÂ¡ÃÂºÃÂ¡n",
     "bill": [
       "B100005"
     ]
   },
   {
     "stt": "KH10004",
-    "ten": "Nguyá»n SÆ¡n",
-    "quocGia": "Viá»t",
+    "ten": "NguyÃ¡Â»Ân SÃÂ¡n",
+    "quocGia": "ViÃ¡Â»Ât",
     "soDienThoai": "0321444678",
     "congNo": {
       "soTien": 100000,
       "donVi": "VND"
     },
-    "ghiChu": "KhÃ¡ch ná»£",
+    "ghiChu": "KhÃÂ¡ch nÃ¡Â»Â£",
     "bill": [
       "B100007"
     ]
@@ -60,15 +60,29 @@
   {
     "stt": "KH10005",
     "ten": "Nguyen AAAA",
-    "quocGia": "Châu Phi",
+    "quocGia": "ChÃ¢u Phi",
     "soDienThoai": "0377777777",
     "congNo": {
       "soTien": 0,
       "donVi": "VND"
     },
-    "ghiChu": "Khách da đen",
+    "ghiChu": "KhÃ¡ch da Äen",
     "bill": [
       "B100008"
+    ]
+  },
+  {
+    "stt": "KH10006",
+    "ten": "Billy",
+    "quocGia": "Nhật",
+    "soDienThoai": "không có",
+    "congNo": {
+      "soTien": 0,
+      "donVi": "VND"
+    },
+    "ghiChu": "",
+    "bill": [
+      "B100009"
     ]
   }
 ]
