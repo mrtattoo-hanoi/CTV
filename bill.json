@@ -99,7 +99,7 @@
       "bill_amount": 468903.60000000003,
       "bill_amount_usd": 18,
       "tyGia": "1 USD = 26.050 VND",
-      "commission": "52100",
+      "commission": 52100,
       "CTV": {
         "id": "T1001",
         "phone": "0123456789",
@@ -121,7 +121,7 @@
       "bill_amount": 703354.5,
       "bill_amount_usd": 27,
       "tyGia": "1 USD = 26.050 VND",
-      "commission": "78151",
+      "commission": 78151,
       "CTV": {
         "id": "T1001",
         "phone": "0123456789",
@@ -143,7 +143,7 @@
       "bill_amount": 703354.5,
       "bill_amount_usd": 27,
       "tyGia": "1 USD = 26.050 VND",
-      "commission": "78151",
+      "commission": 78151,
       "CTV": {
         "id": "T1002",
         "phone": "0987654321",
@@ -165,7 +165,7 @@
       "bill_amount": 1302509,
       "bill_amount_usd": 50,
       "tyGia": "1 EURO = 30.647 VND, 1 USD = 26.050 VND",
-      "commission": "130251",
+      "commission": 130251,
       "CTV": {
         "id": "T1002",
         "phone": "0987654321",
