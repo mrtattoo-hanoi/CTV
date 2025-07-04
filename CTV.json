@@ -8,7 +8,8 @@
       "email": "nguyenvananh@example.com",
       "phone": "1989704555",
       "bankName": "ACBd",
-      "bankNumb": "123456789999"
+      "bankNumb": "123456789999",
+      "anhQR": "QR-T1001.jpg"
     },
     {
       "id": "T1002",
@@ -18,7 +19,8 @@
       "email": "tranthib@example.com",
       "phone": "0987654321",
       "bankName": "ACB",
-      "bankNumb": 12345678
+      "bankNumb": 12345678,
+      "anhQR": "QR-T1002.jpg"
     },
     {
       "id": "T1003",
@@ -28,7 +30,8 @@
       "email": "ducson502@gmail.com",
       "phone": "0377616886",
       "bankName": "ACB",
-      "bankNumb": 12345678
+      "bankNumb": 12345678,
+      "anhQR": "QR-T1003.jpg"
     },
     {
       "id": "T1004",
@@ -38,7 +41,8 @@
       "email": "ducson502@gmail.com",
       "phone": "0326714961",
       "bankName": "ACB",
-      "bankNumb": 12345678
+      "bankNumb": 12345678,
+      "anhQR": "QR-T1004.jpg"
     }
   ]
 }
