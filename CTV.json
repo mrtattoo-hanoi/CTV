@@ -19,8 +19,8 @@
       "email": "tranthib@example.com",
       "phone": "0987654321",
       "bankName": "ACB",
-      "bankNumb": 12345678,
-      "anhQR": ""
+      "bankNumb": "12345678",
+      "anhQR": "QR-T1002.jpg"
     },
     {
       "id": "T1003",
